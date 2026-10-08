@@ -1,13 +1,21 @@
-// BUFFER reserve model. All volumes in liters, all rates in liters per day.
-// Scenario values are ASSUMPTIONS chosen for the demo (see PROJECT.md §88).
+// BUFFER reserve model. All volumes in litres, all rates in litres per day.
+// The allocation rule is the same one tested in simulation/buffer_sim/model.py.
 
-export const household = {
+export interface Household {
+  people: number
+  stored: number // freshwater in the reserve at day 0
+  critical: number // drinking + cooking
+  flexible: number // toilet, floor cleaning, selected washing
+  reserve: number // protected critical reserve, never routed to flexible use
+}
+
+// The guided demo household. Values are ASSUMPTIONS chosen for the demo (PROJECT.md §88).
+export const household: Household = {
   people: 5,
-  stored: 200, // freshwater in the reserve at day 0
-  critical: 20, // drinking + cooking
-  flexible: 30, // toilet, floor cleaning, selected washing, hygiene
-  reserve: 20, // protected critical reserve, never routed to flexible use
-  hygieneCap: 8, // max freshwater BUFFER may still allow for hygiene-sensitive use
+  stored: 200,
+  critical: 20,
+  flexible: 30,
+  reserve: 20,
 }
 
 export type Endpoint = 'kitchen' | 'toilet' | 'floor' | 'washing'
@@ -25,54 +33,69 @@ export interface Plan {
   mode: Mode
   strict: boolean
   draw: number // freshwater drawn per day under this policy
-  allowance: number // freshwater still allowed for hygiene-sensitive use
+  allowance: number // freshwater still allowed for flexible use
   runway: number // days of critical service the freshwater provides
   runwayBasis: 'empty' | 'reserve'
   rainDay: number
   gap: number // days between runway and recharge, positive = shortage
+  rationed: number // flexible demand left unserved because no safe source is available
 }
 
-export function conventional(rainDay: number): Plan {
-  const draw = household.critical + household.flexible
-  const runway = household.stored / draw
+export function conventional(rainDay: number, h: Household = household): Plan {
+  const draw = h.critical + h.flexible
+  const runway = h.stored / draw
   return {
     mode: 'NORMAL',
     strict: false,
     draw,
-    allowance: household.flexible,
+    allowance: h.flexible,
     runway,
     runwayBasis: 'empty',
     rainDay,
-    gap: rainDay - runway,
+    gap: Math.max(0, rainDay - runway),
+    rationed: 0,
   }
 }
 
-// MVP allocation rule from PROJECT.md §42: whatever is left after the protected
-// reserve and critical demand until recharge may be spent on flexible use.
-export function buffered(rainDay: number): Plan {
-  const { stored, reserve, critical, flexible, hygieneCap } = household
-  const usable = stored - reserve
-  if (usable >= rainDay * (critical + flexible)) {
-    const draw = critical + flexible
-    return { mode: 'NORMAL', strict: false, draw, allowance: flexible, runway: usable / draw, runwayBasis: 'reserve', rainDay, gap: 0 }
+// PROJECT.md §42: whatever is left after the protected reserve and the critical
+// demand until recharge may be spent on flexible use.
+export function buffered(rainDay: number, h: Household = household, altAvailable = true): Plan {
+  const usable = h.stored - h.reserve
+  const unmet = (allowance: number) => (altAvailable ? 0 : h.flexible - allowance)
+  if (usable >= rainDay * (h.critical + h.flexible)) {
+    const draw = h.critical + h.flexible
+    return { mode: 'NORMAL', strict: false, draw, allowance: h.flexible, runway: usable / draw, runwayBasis: 'reserve', rainDay, gap: 0, rationed: 0 }
   }
-  const spare = usable - critical * rainDay
+  const spare = usable - h.critical * rainDay
   if (spare < 0) {
-    return { mode: 'CRITICAL', strict: true, draw: critical, allowance: 0, runway: usable / critical, runwayBasis: 'reserve', rainDay, gap: rainDay - usable / critical }
+    const runway = Math.max(0, usable / h.critical)
+    return { mode: 'CRITICAL', strict: true, draw: h.critical, allowance: 0, runway, runwayBasis: 'reserve', rainDay, gap: rainDay - runway, rationed: unmet(0) }
   }
-  const allowance = Math.min(hygieneCap, spare / rainDay)
-  const draw = critical + allowance
+  const allowance = Math.min(h.flexible, spare / rainDay)
+  const draw = h.critical + allowance
   const runway = usable / draw
-  return { mode: 'PRESERVE', strict: allowance < 0.05, draw, allowance, runway, runwayBasis: 'reserve', rainDay, gap: Math.max(0, rainDay - runway) }
+  return {
+    mode: 'PRESERVE',
+    strict: allowance < 0.05,
+    draw,
+    allowance,
+    runway,
+    runwayBasis: 'reserve',
+    rainDay,
+    gap: Math.max(0, rainDay - runway),
+    rationed: unmet(allowance),
+  }
 }
 
-export function route(endpoint: Endpoint, bufferOn: boolean): Source {
-  if (!bufferOn) return 'fresh'
+// Which valve serves a use. Without a usable alternative source, flexible uses
+// fall back to freshwater within BUFFER's allowance.
+export function route(endpoint: Endpoint, bufferOn: boolean, altAvailable = true): Source {
+  if (!bufferOn || !altAvailable) return 'fresh'
   return endpoints[endpoint].critical ? 'fresh' : 'alt'
 }
 
 // Freshwater remaining on day d for a plan. BUFFER holds at the reserve floor.
-export function remaining(plan: Plan, d: number): number {
-  if (plan.runwayBasis === 'empty') return Math.max(0, household.stored - plan.draw * d)
-  return Math.max(household.reserve, household.stored - plan.draw * d)
+export function remaining(plan: Plan, d: number, h: Household = household): number {
+  if (plan.runwayBasis === 'empty') return Math.max(0, h.stored - plan.draw * d)
+  return Math.max(Math.min(h.reserve, h.stored), h.stored - plan.draw * d)
 }

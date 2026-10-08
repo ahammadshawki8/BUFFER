@@ -1,6 +1,7 @@
 // One shared demo clock. React reads it via useClock(); the 3D scene reads
 // clock.t directly inside useFrame so it never re-renders React per frame.
 import { useSyncExternalStore } from 'react'
+import { app } from './app'
 import { DURATION } from './timeline'
 
 type Listener = () => void
@@ -13,7 +14,8 @@ export const clock = {
   capture: params.has('capture'), // frames are set externally, no real-time playback
   listeners: new Set<Listener>(),
   set(t: number) {
-    this.t = Math.min(DURATION, Math.max(0, t))
+    // explore mode has no script, so its clock simply keeps running
+    this.t = app.explore ? Math.max(0, t) : Math.min(DURATION, Math.max(0, t))
     this.listeners.forEach((l) => l())
   },
   toggle() {
@@ -28,8 +30,8 @@ if (!clock.capture) {
   const tick = (now: number) => {
     const dt = (now - last) / 1000
     last = now
-    if (clock.playing) {
-      if (clock.t >= DURATION) clock.playing = false
+    if (clock.playing || app.explore) {
+      if (!app.explore && clock.t >= DURATION) clock.playing = false
       else clock.set(clock.t + dt)
     }
     requestAnimationFrame(tick)
@@ -50,7 +52,7 @@ window.__buffer = { setTime: (t) => clock.set(t), duration: DURATION }
 
 // Space bar pauses and resumes, unless a control has focus.
 addEventListener('keydown', (e) => {
-  if (e.code !== 'Space' || clock.capture) return
+  if (e.code !== 'Space' || clock.capture || app.explore) return
   const el = document.activeElement
   if (el && (el.tagName === 'INPUT' || el.tagName === 'BUTTON')) return
   e.preventDefault()
@@ -68,4 +70,18 @@ export function useClock() {
 
 export function usePlaying() {
   return useSyncExternalStore(subscribe, () => clock.playing)
+}
+
+export function setExplore(on: boolean) {
+  app.explore = on
+  app.request = null
+  app.bufferChangedAt = -10
+  if (on) {
+    clock.playing = false
+  } else {
+    clock.t = 0
+    clock.playing = true
+  }
+  app.emit()
+  clock.listeners.forEach((l) => l())
 }

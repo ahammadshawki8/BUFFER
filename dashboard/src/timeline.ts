@@ -1,6 +1,8 @@
 // The scripted 45-second demo. Every visual reads from frame(t), so a given t
 // always renders identically (needed for frame-by-frame video capture).
-import { buffered, conventional, route, type Endpoint, type Plan, type Source } from './model'
+// In explore mode frame(t) instead runs the model on the viewer's scenario.
+import { app, householdOf } from './app'
+import { buffered, conventional, household, route, type Endpoint, type Household, type Plan, type Source } from './model'
 
 export const DURATION = 45
 
@@ -10,7 +12,7 @@ export const steps = [
   { at: 18, title: 'BUFFER takes over', text: 'The controller switches to Preserve and starts routing by priority.' },
   { at: 20.5, title: 'Sources rerouted', text: 'Flexible tasks open valve B. Drinking and cooking still open valve A.' },
   { at: 30, title: 'Rain is delayed', text: 'The forecast moves the next reliable rain from day 7 to day 9.' },
-  { at: 33.5, title: 'Reserve tightened', text: 'BUFFER removes the freshwater hygiene allowance to hold the reserve longer.' },
+  { at: 33.5, title: 'Reserve tightened', text: 'BUFFER removes the remaining flexible-use allowance to hold the reserve longer.' },
   { at: 38, title: 'The outcome', text: 'Same stored water. Different outcome.' },
 ] as const
 
@@ -34,6 +36,9 @@ export const smooth = (a: number, b: number, t: number) => {
 export const lerp = (a: number, b: number, k: number) => a + (b - a) * k
 
 export interface Frame {
+  explore: boolean
+  h: Household
+  altAvailable: boolean
   t: number
   step: number
   stepProgress: number
@@ -71,6 +76,10 @@ export function stepAt(t: number) {
 }
 
 export function frame(t: number): Frame {
+  return app.explore ? exploreFrame(t) : scriptFrame(t)
+}
+
+function scriptFrame(t: number): Frame {
   const step = stepAt(t)
   const next = steps[step + 1]?.at ?? DURATION
   const stepProgress = clamp01((t - steps[step].at) / (next - steps[step].at))
@@ -95,6 +104,9 @@ export function frame(t: number): Frame {
   const valveB = !!request && request.source === 'alt'
 
   return {
+    explore: false,
+    h: household,
+    altAvailable: true,
     t,
     step,
     stepProgress,
@@ -112,6 +124,47 @@ export function frame(t: number): Frame {
     delayToast: smooth(30, 30.4, t) * (1 - smooth(34.5, 35, t)),
     tightenToast: smooth(33.5, 33.9, t) * (1 - smooth(37.6, 38, t)),
     outcome: smooth(38, 39, t),
+    allowanceShown: plan.allowance,
+  }
+}
+
+// How long one tap on a use keeps its valve open in explore mode.
+export const REQUEST_SECONDS = 4
+
+function exploreFrame(t: number): Frame {
+  const sc = app.scenario
+  const h = householdOf(sc)
+  const conv = conventional(sc.rainDay, h)
+  const bufferBlend = sc.bufferOn ? smooth(app.bufferChangedAt, app.bufferChangedAt + 1.2, t) : 1 - smooth(app.bufferChangedAt, app.bufferChangedAt + 1.2, t)
+  const plan = sc.bufferOn ? buffered(sc.rainDay, h, sc.altAvailable) : conv
+
+  const q = app.request
+  const live = q && t >= q.at && t < q.at + REQUEST_SECONDS
+  const request = live
+    ? { endpoint: q.endpoint, source: route(q.endpoint, sc.bufferOn, sc.altAvailable), age: t - q.at, left: q.at + REQUEST_SECONDS - t }
+    : null
+
+  return {
+    explore: true,
+    h,
+    altAvailable: sc.altAvailable,
+    t,
+    step: -1,
+    stepProgress: 0,
+    bufferOn: sc.bufferOn,
+    bufferBlend,
+    rainDay: sc.rainDay,
+    plan,
+    conv,
+    request,
+    valveA: !!request && request.source === 'fresh',
+    valveB: !!request && request.source === 'alt',
+    redReveal: 1,
+    blueReveal: bufferBlend,
+    warning: !sc.bufferOn && conv.gap > 0 ? 1 : 0,
+    delayToast: 0,
+    tightenToast: 0,
+    outcome: 0,
     allowanceShown: plan.allowance,
   }
 }

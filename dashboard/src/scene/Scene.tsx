@@ -5,10 +5,14 @@ import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 import { EffectComposer, N8AO, SMAA, ToneMapping } from '@react-three/postprocessing'
 import { ToneMappingMode } from 'postprocessing'
 import * as THREE from 'three'
+import { app } from '../app'
 import { clock, useClock, usePlaying } from '../clock'
 import { frame, flowSeconds, smooth, lerp, type Frame } from '../timeline'
 import { endpoints, type Endpoint, type Source } from '../model'
-import { joints, layout, pipes, railX, run, RAIL_Y, RAIL_Z } from './pipes'
+import { joints, layout, pipes, railX as railDay, run, RAIL_Y, RAIL_Z } from './pipes'
+
+// The forecast ribbon shows ten days; anything later sits at its end.
+const railX = (d: number) => railDay(Math.min(10, Math.max(0, d)))
 
 // Maquette palette: everything is clay and concrete; colour is reserved for water and state.
 const C = {
@@ -938,7 +942,7 @@ function SceneLabels() {
       <Tag at={[layout.tankA[0], 3.75, layout.tankA[2]]}>
         <div className="tag tag-tank is-fresh">
           <b>Freshwater reserve</b>
-          <span>Stored rainwater, 200 L</span>
+          <span>Stored rainwater, {f.h.stored} L</span>
         </div>
       </Tag>
       <Tag at={[layout.tankB[0], 3.35, layout.tankB[2]]}>
@@ -975,8 +979,8 @@ export function Scene() {
       <Lighting />
       <Base />
       <House />
-      <Tank pos={layout.tankA} radius={0.95} height={2.3} water={C.fresh} level={(t) => 0.9 - flowSeconds(t, 'fresh') * 0.009} />
-      <Tank pos={layout.tankB} radius={0.85} height={2.0} water={C.altWater} level={(t) => 0.8 - flowSeconds(t, 'alt') * 0.009} />
+      <Tank pos={layout.tankA} radius={0.95} height={2.3} water={C.fresh} level={(t) => (app.explore ? 0.12 + 0.78 * Math.min(1, app.scenario.stored / 600) : 0.9 - flowSeconds(t, 'fresh') * 0.009)} />
+      <Tank pos={layout.tankB} radius={0.85} height={2.0} water={C.altWater} level={(t) => (app.explore ? (app.scenario.altAvailable ? 0.8 : 0.06) : 0.8 - flowSeconds(t, 'alt') * 0.009)} />
       <Pond />
       <Plumbing />
       <Uses />
