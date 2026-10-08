@@ -971,6 +971,14 @@ function SceneLabels() {
 
 /* ---------- assembled scene ---------- */
 
+// Live rig: tank fill from the controller's measured litres.
+function liveLevel(which: 'fresh' | 'alt') {
+  const tm = app.live.telemetry
+  if (!tm) return 0.5
+  const cap = tm.cap_l && tm.cap_l > 0 ? tm.cap_l : 200
+  return Math.min(1, Math.max(0.02, (which === 'fresh' ? tm.fresh_l : tm.alt_l) / cap))
+}
+
 export function Scene() {
   return (
     <>
@@ -979,8 +987,8 @@ export function Scene() {
       <Lighting />
       <Base />
       <House />
-      <Tank pos={layout.tankA} radius={0.95} height={2.3} water={C.fresh} level={(t) => (app.explore ? 0.12 + 0.78 * Math.min(1, app.scenario.stored / 600) : 0.9 - flowSeconds(t, 'fresh') * 0.009)} />
-      <Tank pos={layout.tankB} radius={0.85} height={2.0} water={C.altWater} level={(t) => (app.explore ? (app.scenario.altAvailable ? 0.8 : 0.06) : 0.8 - flowSeconds(t, 'alt') * 0.009)} />
+      <Tank pos={layout.tankA} radius={0.95} height={2.3} water={C.fresh} level={(t) => (app.live.on ? liveLevel('fresh') : app.explore ? 0.12 + 0.78 * Math.min(1, app.scenario.stored / 600) : 0.9 - flowSeconds(t, 'fresh') * 0.009)} />
+      <Tank pos={layout.tankB} radius={0.85} height={2.0} water={C.altWater} level={(t) => (app.live.on ? liveLevel('alt') : app.explore ? (app.scenario.altAvailable ? 0.8 : 0.06) : 0.8 - flowSeconds(t, 'alt') * 0.009)} />
       <Pond />
       <Plumbing />
       <Uses />

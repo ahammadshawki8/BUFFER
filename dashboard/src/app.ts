@@ -12,6 +12,8 @@ export interface Scenario {
   rainDay: number
   bufferOn: boolean
   altAvailable: boolean
+  override: boolean // household forces freshwater for every use
+  advisory: boolean // BUFFER Lite: recommends sources instead of switching valves
 }
 
 export const defaultScenario: Scenario = {
@@ -23,6 +25,8 @@ export const defaultScenario: Scenario = {
   rainDay: 7,
   bufferOn: true,
   altAvailable: true,
+  override: false,
+  advisory: false,
 }
 
 export function householdOf(s: Scenario): Household {
@@ -36,6 +40,36 @@ export function householdOf(s: Scenario): Household {
   }
 }
 
+// One telemetry line from the controller (hardware/serial-protocol.md).
+export interface Telemetry {
+  t: number
+  fresh_l: number
+  alt_l: number
+  cap_l?: number
+  sensor_ok: number
+  alt_ok: number
+  rain_days: number
+  mode: 'NORMAL' | 'PRESERVE' | 'CRITICAL' | 'FAULT'
+  strict: number
+  runway: number
+  gap: number
+  allowance: number
+  draw: number
+  conv_runway: number
+  flex_used: number
+  valve_a: number
+  valve_b: number
+  flow_a: number
+  flow_b: number
+  request: string
+  source: string
+  override: number
+  critical: number
+  flexible: number
+  reserve: number
+  event: string
+}
+
 type Listener = () => void
 
 export const app = {
@@ -43,6 +77,15 @@ export const app = {
   scenario: { ...defaultScenario },
   bufferChangedAt: -10, // clock time of the last BUFFER toggle, for the switch animation
   request: null as { endpoint: Endpoint; at: number } | null,
+  // Live rig: telemetry from the ESP32 over Web Serial (or injected in tests).
+  live: {
+    on: false,
+    status: 'idle' as 'idle' | 'connecting' | 'connected' | 'error',
+    message: '',
+    telemetry: null as Telemetry | null,
+    requestSeenAt: 0,
+    send: null as ((cmd: object) => void) | null,
+  },
   version: 0,
   listeners: new Set<Listener>(),
   emit() {

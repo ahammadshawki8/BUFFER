@@ -37,6 +37,10 @@ export const lerp = (a: number, b: number, k: number) => a + (b - a) * k
 
 export interface Frame {
   explore: boolean
+  live: boolean
+  override: boolean // household forces freshwater; plan shows the consequence
+  advisory: boolean // BUFFER recommends sources but does not switch valves
+  autoPlan: Plan // what BUFFER would run without the override
   h: Household
   altAvailable: boolean
   t: number
@@ -76,6 +80,7 @@ export function stepAt(t: number) {
 }
 
 export function frame(t: number): Frame {
+  if (app.live.on) return liveFrame(t)
   return app.explore ? exploreFrame(t) : scriptFrame(t)
 }
 
@@ -105,6 +110,10 @@ function scriptFrame(t: number): Frame {
 
   return {
     explore: false,
+    live: false,
+    override: false,
+    advisory: false,
+    autoPlan: plan,
     h: household,
     altAvailable: true,
     t,
@@ -136,16 +145,25 @@ function exploreFrame(t: number): Frame {
   const h = householdOf(sc)
   const conv = conventional(sc.rainDay, h)
   const bufferBlend = sc.bufferOn ? smooth(app.bufferChangedAt, app.bufferChangedAt + 1.2, t) : 1 - smooth(app.bufferChangedAt, app.bufferChangedAt + 1.2, t)
-  const plan = sc.bufferOn ? buffered(sc.rainDay, h, sc.altAvailable) : conv
+  const autoPlan = sc.bufferOn ? buffered(sc.rainDay, h, sc.altAvailable) : conv
+  // An override sends every use to freshwater: the household sees what that costs.
+  const override = sc.bufferOn && sc.override
+  const plan: Plan = override ? { ...conv, runwayBasis: 'reserve', runway: Math.max(0, h.stored - h.reserve) / conv.draw } : autoPlan
+  plan.gap = Math.max(0, sc.rainDay - plan.runway)
+  const routed = sc.bufferOn && !override
 
   const q = app.request
-  const live = q && t >= q.at && t < q.at + REQUEST_SECONDS
-  const request = live
-    ? { endpoint: q.endpoint, source: route(q.endpoint, sc.bufferOn, sc.altAvailable), age: t - q.at, left: q.at + REQUEST_SECONDS - t }
+  const active = q && t >= q.at && t < q.at + REQUEST_SECONDS
+  const request = active
+    ? { endpoint: q.endpoint, source: route(q.endpoint, routed, sc.altAvailable), age: t - q.at, left: q.at + REQUEST_SECONDS - t }
     : null
 
   return {
     explore: true,
+    live: false,
+    override,
+    advisory: sc.bufferOn && sc.advisory,
+    autoPlan,
     h,
     altAvailable: sc.altAvailable,
     t,
@@ -162,6 +180,60 @@ function exploreFrame(t: number): Frame {
     redReveal: 1,
     blueReveal: bufferBlend,
     warning: !sc.bufferOn && conv.gap > 0 ? 1 : 0,
+    delayToast: 0,
+    tightenToast: 0,
+    outcome: 0,
+    allowanceShown: plan.allowance,
+  }
+}
+
+// Live rig: everything shown comes from the controller's own telemetry.
+function liveFrame(t: number): Frame {
+  const tm = app.live.telemetry
+  const rainDay = tm ? tm.rain_days : 7
+  const h: Household = tm
+    ? { people: household.people, stored: Math.max(1, tm.fresh_l), critical: tm.critical, flexible: tm.flexible, reserve: Math.min(tm.reserve, tm.fresh_l) }
+    : household
+  const conv = conventional(rainDay, h)
+  const mode = tm?.mode === 'FAULT' ? 'CRITICAL' : (tm?.mode ?? 'NORMAL')
+  const plan: Plan = tm
+    ? {
+        mode,
+        strict: !!tm.strict,
+        draw: tm.draw,
+        allowance: tm.allowance,
+        runway: tm.runway,
+        runwayBasis: 'reserve',
+        rainDay,
+        gap: tm.gap,
+        rationed: 0,
+      }
+    : conv
+  const endpoint = tm && tm.request !== 'none' ? (tm.request as Endpoint) : null
+  const source = tm?.source === 'alt' ? 'alt' : 'fresh'
+  const request = endpoint ? { endpoint, source: source as Source, age: t - app.live.requestSeenAt, left: 1 } : null
+  return {
+    explore: true,
+    live: true,
+    override: !!tm?.override,
+    advisory: false,
+    autoPlan: plan,
+    h,
+    altAvailable: tm ? !!tm.alt_ok : true,
+    t,
+    step: -1,
+    stepProgress: 0,
+    bufferOn: true,
+    bufferBlend: 1,
+    rainDay,
+    plan,
+    conv,
+    request,
+    valveA: !!tm?.valve_a,
+    valveB: !!tm?.valve_b,
+    redReveal: 1,
+    blueReveal: 1,
+    warning: 0,
     delayToast: 0,
     tightenToast: 0,
     outcome: 0,

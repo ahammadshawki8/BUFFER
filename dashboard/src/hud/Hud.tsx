@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { app, defaultScenario, useApp, type Scenario } from '../app'
 import { clock, setExplore, useClock, usePlaying } from '../clock'
+import { connect, serialSupported, startLive, stopLive } from '../live'
 import { endpoints, route, type Endpoint } from '../model'
 import { DURATION, frame, lerp, steps, type Frame } from '../timeline'
 import evidence from '../data/evidence.json'
@@ -20,9 +21,9 @@ export function Hud() {
       <Banners f={f} />
       <Forecast f={f} />
       <Routing f={f} />
-      {f.explore ? <ExploreControls /> : <StepTrack f={f} />}
+      {f.live ? <LiveControls f={f} /> : f.explore ? <ExploreControls /> : <StepTrack f={f} />}
       <Outcome f={f} />
-      {!record && <ModeSwitch explore={f.explore} />}
+      {!record && <ModeSwitch view={f.live ? 'live' : f.explore ? 'explore' : 'demo'} />}
       {!record && !f.explore && <Transport t={t} />}
     </div>
   )
@@ -47,20 +48,31 @@ function Brand({ f }: { f: Frame }) {
         <li className="live">
           <i /> Controller online
         </li>
-        {f.bufferOn && <li className="auto">Automatic routing</li>}
+        {f.live && <li className="auto">Live rig</li>}
+        {!f.live && f.bufferOn && <li className="auto">{f.advisory ? 'Advice only' : f.override ? 'Household override' : 'Automatic routing'}</li>}
       </ul>
     </div>
   )
 }
 
-function ModeSwitch({ explore }: { explore: boolean }) {
+function ModeSwitch({ view }: { view: 'demo' | 'explore' | 'live' }) {
+  const go = (v: typeof view) => {
+    if (v === view) return
+    if (view === 'live') stopLive()
+    if (v === 'demo') setExplore(false)
+    if (v === 'explore') setExplore(true)
+    if (v === 'live') startLive()
+  }
   return (
     <div className="mode-switch" role="group" aria-label="View">
-      <button aria-pressed={!explore} onClick={() => explore && setExplore(false)}>
+      <button aria-pressed={view === 'demo'} onClick={() => go('demo')}>
         Guided demo
       </button>
-      <button aria-pressed={explore} onClick={() => !explore && setExplore(true)}>
+      <button aria-pressed={view === 'explore'} onClick={() => go('explore')}>
         Explore
+      </button>
+      <button aria-pressed={view === 'live'} onClick={() => go('live')}>
+        Live rig
       </button>
     </div>
   )
@@ -84,14 +96,16 @@ function Stats({ f }: { f: Frame }) {
       <div className="plate recharge">
         <h3>Next reliable recharge</h3>
         <div className="mid">Day {f.rainDay.toFixed(0)}</div>
-        <p className={delayed ? 'warn' : ''}>{delayed ? 'Delayed by 2 days' : 'Seasonal rain forecast'}</p>
+        <p className={delayed ? 'warn' : ''}>{delayed ? 'Delayed by 2 days' : f.live ? 'Set on the controller' : 'Seasonal rain forecast'}</p>
       </div>
-      <div className={`plate mode is-${mode.toLowerCase()}`}>
+      <div className={`plate mode is-${f.override ? 'critical' : mode.toLowerCase()}`}>
         <h3>BUFFER mode</h3>
-        <div className="pill">{f.explore && !f.bufferOn ? 'OFF' : mode}</div>
+        <div className="pill">{f.explore && !f.bufferOn ? 'OFF' : f.override ? 'OVERRIDE' : mode}</div>
         <p>
           {!f.bufferOn
             ? 'Every use draws freshwater'
+            : f.override
+              ? 'Household chose freshwater for every use'
             : mode === 'CRITICAL'
               ? 'Drinking water alone will not last'
               : mode === 'NORMAL'
@@ -131,7 +145,22 @@ function Banners({ f }: { f: Frame }) {
           <span>Flexible-use allowance cut from 5.7 to 0 L a day. Drinking and cooking stay fully served.</span>
         </div>
       )}
-      {f.explore && f.bufferOn && f.plan.mode === 'CRITICAL' && (
+      {f.override && (
+        <div className="banner fresh">
+          <b>Household override is on.</b>
+          <span>
+            Every use draws freshwater. Runway falls from {f.autoPlan.runway.toFixed(1)} to {f.plan.runway.toFixed(1)} days. BUFFER resumes when the override is switched off.
+          </span>
+        </div>
+      )}
+      {f.advisory && !f.override && f.plan.mode === 'PRESERVE' && f.altAvailable && (
+        <div className="banner fresh">
+          <b>Advice for today.</b>
+          <span>Use the alternative source for the toilet, floor cleaning and washing. Keep freshwater for drinking and cooking.</span>
+        </div>
+      )}
+      {f.live && <LiveBanner />}
+      {!f.live && f.explore && f.bufferOn && !f.override && f.plan.mode === 'CRITICAL' && (
         <div className="banner risk">
           <b>Not enough freshwater for drinking and cooking until rain.</b>
           <span>
@@ -139,7 +168,7 @@ function Banners({ f }: { f: Frame }) {
           </span>
         </div>
       )}
-      {f.explore && f.bufferOn && f.plan.rationed > 0.05 && f.plan.mode !== 'CRITICAL' && (
+      {!f.live && f.explore && f.bufferOn && !f.override && f.plan.rationed > 0.05 && f.plan.mode !== 'CRITICAL' && (
         <div className="banner fresh">
           <b>No alternative source available.</b>
           <span>
@@ -192,12 +221,22 @@ function Routing({ f }: { f: Frame }) {
     <section className="panel routing" aria-label="Source routing">
       <header>
         <h2>Source routing</h2>
-        <p>{!f.bufferOn ? 'All uses share one tank' : f.altAvailable ? 'Assigned by use priority' : 'Alternative source unavailable'}</p>
+        <p>
+          {!f.bufferOn
+            ? 'All uses share one tank'
+            : f.override
+              ? 'Override: every use on freshwater'
+              : f.advisory
+                ? 'Recommended sources (advice only)'
+                : f.altAvailable
+                  ? 'Assigned by use priority'
+                  : 'Alternative source unavailable'}
+        </p>
       </header>
       <ul className="uses">
         {(Object.keys(endpoints) as Endpoint[]).map((e) => {
-          const src = route(e, f.bufferOn, f.altAvailable)
-          const limited = f.bufferOn && !f.altAvailable && !endpoints[e].critical
+          const src = route(e, f.bufferOn && !f.override, f.altAvailable)
+          const limited = f.bufferOn && !f.override && !f.altAvailable && !endpoints[e].critical
           const active = r?.endpoint === e
           return (
             <li key={e} className={active ? 'is-active' : ''}>
@@ -306,10 +345,18 @@ function ExploreControls() {
         </label>
         <label className="toggle">
           <input type="checkbox" checked={s.altAvailable} onChange={(e) => update({ altAvailable: e.target.checked })} />
-          Alternative source available
+          Alternative available
+        </label>
+        <label className="toggle">
+          <input type="checkbox" checked={s.override} onChange={(e) => update({ override: e.target.checked })} />
+          Household override
+        </label>
+        <label className="toggle">
+          <input type="checkbox" checked={s.advisory} onChange={(e) => update({ advisory: e.target.checked })} />
+          Advice only
         </label>
         <span className="divider" />
-        <span className="hint-inline">Request water for</span>
+        <span className="hint-inline">Request</span>
         {(Object.keys(endpoints) as Endpoint[]).map((e) => (
           <button
             key={e}
@@ -325,6 +372,110 @@ function ExploreControls() {
         <button className="reset" onClick={() => update({ ...defaultScenario })}>
           Reset
         </button>
+      </div>
+    </section>
+  )
+}
+
+function LiveBanner() {
+  const { status, message, telemetry: tm } = app.live
+  if (status !== 'connected')
+    return (
+      <div className="banner fresh">
+        <b>{status === 'error' ? message : 'Connect the BUFFER controller.'}</b>
+        <span>Plug the ESP32 into this computer by USB, then choose Connect controller below. Chrome or Edge is required.</span>
+      </div>
+    )
+  if (tm && !tm.sensor_ok)
+    return (
+      <div className="banner risk">
+        <b>Level sensor fault.</b>
+        <span>BUFFER cannot measure the freshwater tank, so it protects it: drinking water still flows, flexible uses go to the alternative source.</span>
+      </div>
+    )
+  if (tm?.event.startsWith('denied'))
+    return (
+      <div className="banner fresh">
+        <b>Request held back.</b>
+        <span>No alternative source is available and the freshwater allowance for flexible use is spent for today.</span>
+      </div>
+    )
+  if (tm?.event.startsWith('noflow'))
+    return (
+      <div className="banner risk">
+        <b>No flow detected.</b>
+        <span>The valve opened but no water moved. Check that the tank is not empty and the line is not blocked.</span>
+      </div>
+    )
+  return null
+}
+
+function LiveControls({ f }: { f: Frame }) {
+  const { status, telemetry: tm, send } = app.live
+  const connected = status === 'connected'
+  return (
+    <section className="steps explore live-dock" aria-label="Live controller">
+      <div className="live-row">
+        {connected ? (
+          <span className="live-state">
+            <i /> Controller connected
+          </span>
+        ) : (
+          <button className="primary" onClick={() => connect()} disabled={status === 'connecting' || !serialSupported()}>
+            {status === 'connecting' ? 'Connecting' : 'Connect controller'}
+          </button>
+        )}
+        {tm && (
+          <dl className="live-readout">
+            <div>
+              <dt>Freshwater</dt>
+              <dd>{tm.fresh_l.toFixed(0)} L</dd>
+            </div>
+            <div>
+              <dt>Alternative</dt>
+              <dd>{tm.alt_l.toFixed(0)} L</dd>
+            </div>
+            <div>
+              <dt>Flexible freshwater used today</dt>
+              <dd>
+                {tm.flex_used.toFixed(1)} of {tm.allowance.toFixed(1)} L
+              </dd>
+            </div>
+            <div>
+              <dt>Last event</dt>
+              <dd>{tm.event}</dd>
+            </div>
+          </dl>
+        )}
+      </div>
+      <div className="actions">
+        <label className="toggle">
+          Next reliable rain
+          <input
+            type="range"
+            min={1}
+            max={10}
+            step={1}
+            value={Math.round(f.rainDay)}
+            disabled={!connected}
+            onChange={(e) => send?.({ rain_days: Number(e.target.value) })}
+          />
+          <output>Day {Math.round(f.rainDay)}</output>
+        </label>
+        <label className="toggle">
+          <input type="checkbox" checked={f.altAvailable} disabled={!connected} onChange={(e) => send?.({ alt: e.target.checked ? 1 : 0 })} />
+          Alternative available
+        </label>
+        <button className="use-btn" disabled={!connected} onClick={() => send?.({ day_ms: 60000 })}>
+          One-minute days
+        </button>
+        <span className="divider" />
+        <span className="hint-inline">Request</span>
+        {(Object.keys(endpoints) as Endpoint[]).map((e) => (
+          <button key={e} className="use-btn" disabled={!connected} onClick={() => send?.({ request: e })}>
+            {endpoints[e].name}
+          </button>
+        ))}
       </div>
     </section>
   )

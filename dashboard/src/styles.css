@@ -1199,3 +1199,68 @@ html.capture * {
   border-color: transparent;
   color: #b9cdd4;
 }
+
+/* ---------- live rig dock ---------- */
+
+.live-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.steps.explore .live-row button.primary {
+  width: auto;
+  display: inline-block;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  font-weight: 750;
+}
+
+.live-state {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 650;
+  font-size: 0.9rem;
+}
+
+.live-state i {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: #46c07e;
+  box-shadow: 0 0 0 0.2rem rgb(70 192 126 / 0.25);
+}
+
+.live-readout {
+  display: flex;
+  gap: 1.4rem;
+  margin-left: auto;
+}
+
+.live-readout div {
+  display: grid;
+}
+
+.live-readout dt {
+  font-size: 0.72rem;
+  color: #b9cdd4;
+}
+
+.live-readout dd {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.live-dock .toggle input[type='range'] {
+  width: 7rem;
+  accent-color: #8cbcf0;
+}
+
+.live-dock button:disabled,
+.live-dock input:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
