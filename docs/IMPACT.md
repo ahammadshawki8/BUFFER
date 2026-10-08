@@ -25,6 +25,9 @@ a pond-type alternative source for non-drinking uses.
 
 **Headline: about 70 freshwater-days gained per household per dry season** (SIMULATED).
 
+Under uncertainty (2,000 resampled seasons with day-to-day demand varying ±15% for drinking and ±30% for
+flexible use), the chance that a season has any shortage falls from **99.9%** to **8.2%** (SIMULATED).
+
 ### Why not just "always use the pond for non-drinking tasks"?
 
 A fixed rule that always sends flexible uses to the alternative source reaches the same reliability
