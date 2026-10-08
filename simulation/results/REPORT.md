@@ -119,6 +119,42 @@ which BUFFER makes visible as a choice instead of a surprise.
 
 Results barely change across forecast settings: BUFFER does not depend on a precise forecast.
 
+## Uncertainty: 2,000 resampled seasons with noisy demand
+
+Each run draws one of the 34 real seasons at random and varies daily demand
+(drinking and cooking about ±15%, flexible use about ±30%).
+
+| Policy | Chance of any shortage in a season | Mean shortage days | 90th-percentile season |
+|---|---|---|---|
+| Conventional | 99.9% | 72.5 | 107 |
+| Static rule | 8.2% | 0.6 | 0 |
+| Tank threshold | 85.4% | 33.4 | 59 |
+| **BUFFER** | 8.2% | 0.6 | 0 |
+
+## Automatic valves against advice only
+
+In advice-only mode (BUFFER Lite) the household decides whether to follow the routing. Here it follows
+the advice on a random share of days and uses freshwater for everything on the others.
+
+| Days the advice is followed | Mean shortage days | Seasons with shortage |
+|---|---|---|
+| 100% | 0.5 | 3 of 34 |
+| 80% | 8.1 | 14 of 34 |
+| 60% | 28.1 | 30 of 34 |
+| 40% | 45.4 | 31 of 34 |
+| 0% | 70.5 | 34 of 34 |
+
+Every missed day spends freshwater the household will need later, so the benefit falls quickly:
+following the advice 80% of the time already raises shortage from 0.5 to
+8.1 days a season. This is the case for automatic valves in the
+BUFFER Control tier, and for advice-only mode as an entry product rather than the end state.
+
+## Sensor failure
+
+With the freshwater level sensor down for all of January every season, BUFFER falls back to protecting
+freshwater (no flexible allowance), exactly as the firmware does. Mean shortage stays at
+**0.5 days**: a month-long outage in the driest stretch costs nothing.
+
 ## Limitations
 
 - Household demand, roof area, tank size and reserve are assumptions; they must be replaced with field values.

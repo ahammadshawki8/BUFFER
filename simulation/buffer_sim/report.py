@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+NL = chr(10)
 SHORT = {
     "conventional": "Conventional",
     "always_alt": "Static rule",
@@ -141,6 +142,39 @@ which BUFFER makes visible as a choice instead of a surprise.
     ) + """
 
 Results barely change across forecast settings: BUFFER does not depend on a precise forecast.
+
+## Uncertainty: 2,000 resampled seasons with noisy demand
+
+Each run draws one of the 34 real seasons at random and varies daily demand
+(drinking and cooking about ±15%, flexible use about ±30%).
+
+| Policy | Chance of any shortage in a season | Mean shortage days | 90th-percentile season |
+|---|---|---|---|
+""" + NL.join(
+        f"| {SHORT[p]} | {v['p_shortage']:.1%} | {v['mean_days']} | {v['p90_days']:.0f} |" for p, v in s["monte_carlo"].items()
+    ) + f"""
+
+## Automatic valves against advice only
+
+In advice-only mode (BUFFER Lite) the household decides whether to follow the routing. Here it follows
+the advice on a random share of days and uses freshwater for everything on the others.
+
+| Days the advice is followed | Mean shortage days | Seasons with shortage |
+|---|---|---|
+""" + NL.join(
+        f"| {float(k):.0%} | {v['mean_shortage_days']} | {v['years_with_shortage']} of {v['years']} |" for k, v in s["compliance"].items()
+    ) + f"""
+
+Every missed day spends freshwater the household will need later, so the benefit falls quickly:
+following the advice 80% of the time already raises shortage from {s['compliance']['1.0']['mean_shortage_days']} to
+{s['compliance']['0.8']['mean_shortage_days']} days a season. This is the case for automatic valves in the
+BUFFER Control tier, and for advice-only mode as an entry product rather than the end state.
+
+## Sensor failure
+
+With the freshwater level sensor down for all of January every season, BUFFER falls back to protecting
+freshwater (no flexible allowance), exactly as the firmware does. Mean shortage stays at
+**{s['sensor_outage_january']['mean_shortage_days']} days**: a month-long outage in the driest stretch costs nothing.
 
 ## Limitations
 

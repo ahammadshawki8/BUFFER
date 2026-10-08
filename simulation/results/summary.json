@@ -703,6 +703,96 @@
       }
     }
   },
+  "monte_carlo": {
+    "conventional": {
+      "p_shortage": 0.999,
+      "mean_days": 72.5,
+      "p90_days": 107.0
+    },
+    "always_alt": {
+      "p_shortage": 0.082,
+      "mean_days": 0.6,
+      "p90_days": 0.0
+    },
+    "threshold": {
+      "p_shortage": 0.854,
+      "mean_days": 33.4,
+      "p90_days": 59.0
+    },
+    "buffer": {
+      "p_shortage": 0.082,
+      "mean_days": 0.6,
+      "p90_days": 0.0
+    }
+  },
+  "compliance": {
+    "1.0": {
+      "mean_shortage_days": 0.5,
+      "median_shortage_days": 0.0,
+      "max_shortage_days": 9,
+      "years_with_shortage": 3,
+      "years": 34,
+      "mean_shortage_l": 9,
+      "mean_alt_l": 5086,
+      "mean_flex_fresh_l": 5872,
+      "mean_flex_cut_l": 0
+    },
+    "0.8": {
+      "mean_shortage_days": 8.1,
+      "median_shortage_days": 0.0,
+      "max_shortage_days": 55,
+      "years_with_shortage": 14,
+      "years": 34,
+      "mean_shortage_l": 154,
+      "mean_alt_l": 4375,
+      "mean_flex_fresh_l": 6583,
+      "mean_flex_cut_l": 0
+    },
+    "0.6": {
+      "mean_shortage_days": 28.1,
+      "median_shortage_days": 27.0,
+      "max_shortage_days": 73,
+      "years_with_shortage": 30,
+      "years": 34,
+      "mean_shortage_l": 545,
+      "mean_alt_l": 3668,
+      "mean_flex_fresh_l": 7290,
+      "mean_flex_cut_l": 0
+    },
+    "0.4": {
+      "mean_shortage_days": 45.4,
+      "median_shortage_days": 44.0,
+      "max_shortage_days": 88,
+      "years_with_shortage": 31,
+      "years": 34,
+      "mean_shortage_l": 881,
+      "mean_alt_l": 3096,
+      "mean_flex_fresh_l": 7862,
+      "mean_flex_cut_l": 0
+    },
+    "0.0": {
+      "mean_shortage_days": 70.5,
+      "median_shortage_days": 75.5,
+      "max_shortage_days": 114,
+      "years_with_shortage": 34,
+      "years": 34,
+      "mean_shortage_l": 1376,
+      "mean_alt_l": 2176,
+      "mean_flex_fresh_l": 8782,
+      "mean_flex_cut_l": 0
+    }
+  },
+  "sensor_outage_january": {
+    "mean_shortage_days": 0.5,
+    "median_shortage_days": 0.0,
+    "max_shortage_days": 9,
+    "years_with_shortage": 3,
+    "years": 34,
+    "mean_shortage_l": 9,
+    "mean_alt_l": 5094,
+    "mean_flex_fresh_l": 5864,
+    "mean_flex_cut_l": 0
+  },
   "per_year_shortage_days": {
     "conventional": {
       "1991": 92,

@@ -107,7 +107,25 @@ def flexible_allowance(policy: str, s: float, hh: Household, est_days: float, al
     return float(np.clip(spare / h, 0.0, hh.flexible))
 
 
-def simulate(rain: np.ndarray, months: np.ndarray, hh: Household, policy: str, est_days: np.ndarray, start_full: bool = True) -> dict[str, np.ndarray]:
+def simulate(
+    rain: np.ndarray,
+    months: np.ndarray,
+    hh: Household,
+    policy: str,
+    est_days: np.ndarray,
+    start_full: bool = True,
+    crit_mult: np.ndarray | None = None,
+    flex_mult: np.ndarray | None = None,
+    comply: np.ndarray | None = None,
+    sensor_fault: np.ndarray | None = None,
+) -> dict[str, np.ndarray]:
+    """Run one policy day by day.
+
+    crit_mult / flex_mult: daily demand multipliers (demand uncertainty).
+    comply: False on days the household ignores BUFFER's advice and uses freshwater for everything.
+    sensor_fault: True on days the level sensor is down; BUFFER then protects freshwater
+    (no flexible allowance), as the firmware does.
+    """
     n = len(rain)
     storage = np.zeros(n)
     inflow = np.zeros(n)
@@ -125,16 +143,24 @@ def simulate(rain: np.ndarray, months: np.ndarray, hh: Household, policy: str, e
             spill[t] = s - hh.tank_l
             s = hh.tank_l
         alt_ok = months[t] not in hh.alt_dry_months
-        allow = flexible_allowance(policy, s, hh, est_days[t], alt_ok)
+        need_c = hh.critical * (crit_mult[t] if crit_mult is not None else 1.0)
+        need_f = hh.flexible * (flex_mult[t] if flex_mult is not None else 1.0)
+        if policy.startswith("buffer") and sensor_fault is not None and sensor_fault[t]:
+            allow = 0.0  # level unknown: no flexible freshwater (flexible goes to the alternative or waits)
+        else:
+            allow = flexible_allowance(policy, s, hh, est_days[t], alt_ok)
+        if comply is not None and not comply[t]:
+            allow = hh.flexible  # advice ignored today
+        allow *= need_f / hh.flexible if hh.flexible else 0.0
 
-        crit = min(s, hh.critical)  # drinking and cooking always come first
+        crit = min(s, need_c)  # drinking and cooking always come first
         s -= crit
-        crit_short[t] = hh.critical - crit
+        crit_short[t] = need_c - crit
 
         f = min(s, allow)
         s -= f
         flex_fresh[t] = f
-        rest = hh.flexible - f
+        rest = need_f - f
         if alt_ok:
             flex_alt[t] = rest
         else:

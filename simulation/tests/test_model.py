@@ -64,3 +64,24 @@ def test_alternative_unavailable_cuts_flexible_service_for_buffer():
     out = run("buffer", est=9.0, hh=hh)
     assert out["flex_alt"].sum() == 0
     assert out["flex_cut"].sum() > 0
+
+
+def test_ignoring_all_advice_equals_conventional():
+    rng = np.random.default_rng(3)
+    rain = rng.gamma(0.3, 15, 300)
+    months = np.full(300, 1)
+    est = np.full(300, 7.0)
+    a = simulate(rain, months, HH, "buffer", est, comply=np.zeros(300, dtype=bool))
+    b = simulate(rain, months, HH, "conventional", est)
+    assert np.allclose(a["storage"], b["storage"])
+
+
+def test_sensor_fault_spends_no_flexible_freshwater():
+    out = simulate(np.zeros(10), np.full(10, 1), HH, "buffer", np.full(10, 2.0), sensor_fault=np.ones(10, dtype=bool))
+    assert out["flex_fresh"].sum() == 0
+    assert out["crit_short"].sum() == 0  # drinking water still served
+
+
+def test_demand_noise_scales_needs():
+    out = simulate(np.zeros(3), np.full(3, 1), HH, "conventional", np.full(3, 7.0), crit_mult=np.full(3, 2.0))
+    assert out["storage"][0] == HH.tank_l - 2 * HH.critical - HH.flexible

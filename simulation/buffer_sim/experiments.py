@@ -83,6 +83,57 @@ def compare(df, hh: Household, quantile: float = QUANTILE, policies=POLICIES, ca
     return tables, {p: summarise(t) for p, t in tables.items()}
 
 
+def monte_carlo(df, hh: Household, est: np.ndarray, draws: int = 2000, seed: int = 7) -> dict:
+    """Resample whole seasons and add day-to-day demand noise.
+
+    Each draw picks one of the 34 real seasons at random and multiplies daily demand by
+    lognormal noise (drinking and cooking about +/-15%, flexible use about +/-30%).
+    Returns the probability of any critical shortage in a season, per policy.
+    """
+    years = np.array(sorted(df.hydro_year[df.hydro_year <= 2024].unique()))
+    out = {}
+    for policy in ("conventional", "always_alt", "threshold", "buffer"):
+        short_seasons, days = 0, []
+        r = np.random.default_rng(seed)  # same draws for every policy
+        for _ in range(draws):
+            y = r.choice(years)
+            m = (df.hydro_year == y).values
+            n = int(m.sum())
+            crit = r.lognormal(0, 0.15, n)
+            flex = r.lognormal(0, 0.30, n)
+            o = simulate(df.rain_mm.values[m], df.date.dt.month.values[m], hh, policy, est[m], start_full=True, crit_mult=crit, flex_mult=flex)
+            d = int((o["crit_short"] > 1e-9).sum())
+            days.append(d)
+            short_seasons += d > 0
+        days = np.array(days)
+        out[policy] = {
+            "p_shortage": round(short_seasons / draws, 3),
+            "mean_days": round(float(days.mean()), 1),
+            "p90_days": float(np.percentile(days, 90)),
+        }
+    return out
+
+
+def compliance(df, hh: Household, est: np.ndarray, levels=(1.0, 0.8, 0.6, 0.4, 0.0), seed: int = 11) -> dict:
+    """Advice-only BUFFER: the household follows the routing on a random share of days."""
+    out = {}
+    for c in levels:
+        r = np.random.default_rng(seed)
+        comply = r.random(len(df)) < c
+        o = simulate(df.rain_mm.values, df.date.dt.month.values, hh, "buffer", est, comply=comply)
+        t = season_table(pd.DataFrame({**o, "hydro_year": df.hydro_year.values}))
+        out[str(c)] = summarise(t)
+    return out
+
+
+def sensor_outage(df, hh: Household, est: np.ndarray) -> dict:
+    """The freshwater level sensor is down every January (31 days in the driest stretch)."""
+    fault = (df.date.dt.month == 1).values
+    o = simulate(df.rain_mm.values, df.date.dt.month.values, hh, "buffer", est, sensor_fault=fault)
+    t = season_table(pd.DataFrame({**o, "hydro_year": df.hydro_year.values}))
+    return summarise(t)
+
+
 def main():
     import matplotlib
 
@@ -108,6 +159,11 @@ def main():
 
     # Ponds and shallow sources often fail late in the dry season.
     _, alt_dry = compare(df, BASE.with_(alt_dry_months=(3, 4, 5)), cache=cache)
+
+    est_base = cache[QUANTILE]
+    mc = monte_carlo(df, BASE, est_base)
+    comp = compliance(df, BASE, est_base)
+    outage = sensor_outage(df, BASE, est_base)
 
     people_sweep = {}
     for people in (3, 5, 7):
@@ -159,6 +215,9 @@ def main():
         "quantile_sweep": {str(k): v for k, v in quantile_sweep.items()},
         "alternative_dry_mar_may": alt_dry,
         "people_sweep": {str(k): v for k, v in people_sweep.items()},
+        "monte_carlo": mc,
+        "compliance": comp,
+        "sensor_outage_january": outage,
         "per_year_shortage_days": per_year,
         "example_season": example,
     }
@@ -169,7 +228,7 @@ def main():
     DASHBOARD_DATA.mkdir(parents=True, exist_ok=True)
     evidence = {k: summary[k] for k in ("site", "rainfall_source", "household", "base", "impact", "tank_sweep", "per_year_shortage_days", "example_season")}
     (DASHBOARD_DATA / "evidence.json").write_text(json.dumps(evidence))
-    print(json.dumps({"base": base, "impact": impact}, indent=2))
+    print(json.dumps({"impact": impact, "monte_carlo": mc, "compliance": {k: v["mean_shortage_days"] for k, v in comp.items()}, "sensor_outage": outage["mean_shortage_days"]}, indent=2))
 
 
 if __name__ == "__main__":
