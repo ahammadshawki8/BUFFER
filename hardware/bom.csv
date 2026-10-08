@@ -1,0 +1,17 @@
+part,qty,unit_bdt,total_bdt,price_basis,source,function
+ESP32 DevKit V1 (30-pin),1,490,490,retail Oct 2026,https://techshopbd.com/product/esp32-devkit-v1,controller: sensing planning valve control serial link
+2-channel 5V relay module,1,130,130,retail Oct 2026,https://techshopbd.com/product/2-channel-5v-relay-module-china,switches the two 12 V valves; isolates the ESP32 from the coils
+12V 1/2in plastic solenoid valve (normally closed),2,890,1780,retail Oct 2026,https://store.roboticsbd.com/robotics-parts/2518-plastic-water-solenoid-valve-12v-12-nominal-robotics-bangladesh.html,valve A (freshwater) and valve B (alternative); fail closed without power
+HC-SR04 ultrasonic sensor,2,125,250,retail Oct 2026,https://store.roboticsbd.com/sensors/22-ultrasonic-sonar-sensor-hc-sr04-robotics-bangladesh.html,tank level for each source
+YF-S201 hall-effect flow sensor,2,379,758,retail Oct 2026,https://store.roboticsbd.com/sensors/311-yf-s201-hall-effect-water-flow-meter-sensor-bangladesh.html,metered dose and actual freshwater use per line
+12V 2A DC power adapter,1,280,280,retail Oct 2026,https://www.bdtronics.com/power-adapter-12v-2a.html,low-voltage supply for valves and electronics
+LM2596 buck converter 12V to 5V,1,120,120,estimate,local electronics market,powers the ESP32 and relay board from the 12 V adapter
+1N4007 diode,2,5,10,estimate,local electronics market,flyback protection across each valve coil
+Resistors 1k and 2k (divider set),1,30,30,estimate,local electronics market,5 V to 3.3 V dividers for the two echo and two flow signals
+Push buttons and two toggle switches,1,120,120,estimate,local electronics market,use requests; override; alternative-source available
+Breadboard and jumper wires,1,250,250,estimate,local electronics market,prototype wiring
+Clear silicone tubing 8 mm (3 m) and barb fittings,1,450,450,estimate,local hardware market,water lines
+5 L food-storage containers,2,200,400,estimate,local market,the two tanks
+Grey bucket and plywood stand,1,600,600,estimate,local market,non-drinking outlet and raised platform for gravity feed
+Cable ties screws tape,1,150,150,estimate,local market,assembly
+TOTAL,,,5818,,,bench prototype
