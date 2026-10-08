@@ -1,0 +1,12 @@
+import { chromium } from 'playwright'
+const b = await chromium.launch({ args: ['--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist'] })
+const p = await b.newPage({ viewport: { width: 1920, height: 1080 } })
+const errs = []; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => m.type()==='error' && errs.push(m.text()))
+await p.goto('http://localhost:5173/?t=22&autoplay=0'); await p.waitForTimeout(3000)
+await p.mouse.move(960, 500); await p.mouse.down(); await p.mouse.move(700, 430, { steps: 12 }); await p.mouse.up()
+await p.mouse.wheel(0, -500); await p.waitForTimeout(800)
+await p.screenshot({ path: process.argv[2] })
+await p.keyboard.press('Space'); await p.waitForTimeout(1800)
+await p.screenshot({ path: process.argv[3] })
+console.log('errors:', errs.filter(e=>!e.includes('X4')).slice(0,5))
+await b.close()
