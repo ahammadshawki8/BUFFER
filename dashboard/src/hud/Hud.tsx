@@ -7,6 +7,7 @@ import { DURATION, frame, lerp, steps, type Frame } from '../timeline'
 import evidence from '../data/evidence.json'
 import { Chart } from './Chart'
 import { Evidence } from './Evidence'
+import { ChartIcon, FloatingCard, RouteIcon } from './FloatingCard'
 
 const record = new URLSearchParams(location.search).has('record')
 
@@ -183,7 +184,7 @@ function Banners({ f }: { f: Frame }) {
 function Forecast({ f }: { f: Frame }) {
   const [tab, setTab] = useState<'forecast' | 'evidence'>('forecast')
   return (
-    <section className="panel forecast" aria-label="Forecast and evidence">
+    <FloatingCard id="forecast" title="Forecast and evidence" className="forecast" icon={<ChartIcon />}>
       <header>
         <div className="tabs" role="tablist">
           <button role="tab" aria-selected={tab === 'forecast'} onClick={() => setTab('forecast')}>
@@ -210,7 +211,7 @@ function Forecast({ f }: { f: Frame }) {
         )}
       </header>
       {tab === 'forecast' ? <Chart f={f} /> : <Evidence />}
-    </section>
+    </FloatingCard>
   )
 }
 
@@ -218,7 +219,7 @@ function Routing({ f }: { f: Frame }) {
   const r = f.request
   const flow = (on: boolean) => (on ? (0.82 + Math.sin(f.t * 7) * 0.03).toFixed(2) : '0.00')
   return (
-    <section className="panel routing" aria-label="Source routing">
+    <FloatingCard id="routing" title="Source routing" className="routing" icon={<RouteIcon />}>
       <header>
         <h2>Source routing</h2>
         <p>
@@ -271,7 +272,7 @@ function Routing({ f }: { f: Frame }) {
           <dd>{f.bufferOn ? `${f.plan.allowance.toFixed(1)} L/day` : 'Unlimited'}</dd>
         </div>
       </dl>
-    </section>
+    </FloatingCard>
   )
 }
 
