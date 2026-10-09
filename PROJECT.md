@@ -54,7 +54,7 @@ claim in the submission can be traced to a file. Evidence labels follow §88.
 | Physical prototype | Not built (about 5,800 BDT, `hardware/bom.csv`). Prototype footage in the video is an AI-generated visualisation of the planned setup and is disclosed as such in the submission |
 | Stakeholder conversations | Three 15-minute conversations: a WASH researcher, an NGO field officer, a coastal household. Notes go in `research/stakeholder-notes.md` |
 | Field pilot | Planned (`docs/PILOT_PLAN.md`); after the competition |
-| Patent search | Before any "first" or "only" claim (§87) |
+| Patent search | Preliminary search done (`research/patent-search.md`): no document found combining a recharge forecast, a protected drinking reserve and priority routing. Direct Espacenet/Patentscope searches and a patent agent's review still needed before any filing; still no "first" or "only" claims |
 
 ## Changes from the original plan
 

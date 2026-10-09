@@ -45,7 +45,7 @@ Details: [simulation/results/REPORT.md](simulation/results/REPORT.md), [docs/IMP
 | [dashboard/](dashboard/) | 3D digital twin: guided demo, Explore mode on the model, Live device mode over Web Serial | Builds; scripted browser checks |
 | [hardware/](hardware/) | Priced bill of materials, wiring and pin map, serial protocol, household retrofit plan | |
 | [validation/](validation/) | Bench test protocol with pass criteria | Not yet run (no physical prototype yet) |
-| [research/](research/) | Bibliography, prior-art comparison, assumptions register, stakeholder conversation notes | |
+| [research/](research/) | Bibliography, prior-art comparison, preliminary patent search, assumptions register, stakeholder conversation notes | |
 | [docs/](docs/) | Impact, failure modes, deployment and business model, field pilot plan | |
 | [xylem_global_student_innovation_challenge_2026_research_corpus.md](xylem_global_student_innovation_challenge_2026_research_corpus.md) | Competition research corpus | |
 

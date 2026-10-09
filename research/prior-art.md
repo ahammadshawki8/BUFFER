@@ -41,10 +41,12 @@ dry seasons:
   more than twice as much alternative water (10,958 L against 5,086 L per season), and fails when the alternative dries up (9.0 days against BUFFER's 0.5).
 - Only the forecast-aware reserve rule gets both: near-zero shortage and minimal reliance on lower-quality water.
 
-## Still to do before any novelty claim
+## Patent search
 
-A formal search of Google Patents, Espacenet and WIPO Patentscope with the query set in PROJECT.md §87.
-Until then, BUFFER's documents avoid "first" or "only" claims.
+A preliminary patent search (9 October 2026) is documented in [patent-search.md](patent-search.md). It found no
+document combining a recharge forecast, a protected drinking reserve and priority routing across household sources;
+the closest documents each cover one or two elements. It is not a formal patentability opinion, so BUFFER's documents
+still avoid "first" or "only" claims and say instead: "we found no system that combines …".
 
 ## References
 
