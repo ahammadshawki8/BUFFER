@@ -1299,60 +1299,68 @@ Critical shortage: avoided
 
 ---
 
-# 28. Full 3–4 Minute Video Structure
+# 28. Submission Video Plan (3–4 minutes)
 
-## 0:00–0:20 — Hook
+**Goal:** win the Grand Prize. The video is the one thing every judge watches, so it must show the research
+results, graphs, simulation, prototype demo and stakeholder interviews in one clear story, and score on all
+three criteria: Impact, Challenge Fit & Feasibility, Innovation.
 
-Show an almost-empty water tank.
+## Required content (Official Rules)
 
-> “The hardest part of rainwater harvesting is not always collecting water. It is making that water survive until rain returns.”
+The video must include: **team introduction**, **track (University)**, **challenge (Water Access)**,
+**what the project is**, and **a short demo**. All five are built into the structure below.
 
-## 0:20–0:45 — Evidence
+## Structure (about 3:45)
 
-Show coastal Bangladesh research:
+| Time | Section | Footage | Criterion |
+|---|---|---|---|
+| 0:00–0:15 | **Hook:** a family's tank runs dry before the rain | Stock/news: dry pond, woman carrying water. On-screen text: "91% of households can't store enough rainwater for the year" | Impact |
+| 0:15–0:25 | **Team, University track, Water Access** | Team on camera or title card | Required |
+| 0:25–0:55 | **The problem, with evidence** | Animated map of Khulna/Satkhira; stats: 27% year-round access (Koyra), 2.84 months a year without reliable water; one 5-second news clip | Impact |
+| 0:55–1:15 | **The insight:** families already ration water by hand | Household interview (team's own); then: "What if the tank could see the dry season coming?" | Innovation |
+| 1:15–1:35 | **BUFFER:** battery management for freshwater | Logo intro animation; runway, reserve and routing explained on the 3D dashboard | Innovation |
+| 1:35–2:30 | **The demo** | AI-generated prototype footage intercut with the dashboard: 4.0 → 7.0 → 9.0 days, valves switching, rain delayed | Feasibility |
+| 2:30–3:00 | **Evidence:** tested on 34 years of real rainfall | Animated charts: 70.5 → 0.5 shortage days; 99.9% → 8.2% chance of shortage; model matches 4 of 5 field figures; results at 7 sites | Impact, Feasibility |
+| 3:00–3:15 | **Experts react** | Researcher and NGO interviews (team's own), one or two soundbites | Feasibility |
+| 3:15–3:35 | **How it is built and deployed** | ESP32 controller and firmware, parts list (about 6,300 BDT per household), add-on to existing NGO tanks (UNDP's 2,000 L programme) | Feasibility |
+| 3:35–3:50 | **Close** | "BUFFER doesn't create water. It makes the water you have last." Logo, tagline: "Protect the water you cannot replace." | — |
 
-- high rainwater dependence,
-- weak year-round availability,
-- dry-season rationing,
-- salinity.
+## What makes it Grand Prize level
 
-## 0:45–1:05 — Insight
+1. **Real people on screen.** The team's three stakeholder conversations matter more than any graphic; even 10 seconds of
+   a coastal household describing the dry season changes how judges read everything after it.
+2. **One number to remember:** "70 days without drinking water, down to less than one."
+3. **Honest strength:** "tested on 34 years of real rainfall and checked against field surveys", not "AI-powered".
+4. **The team's own voice** for narration, not a synthetic voice.
+5. **One point per section.** Do not overload.
 
-> “Families already ration their best water manually. BUFFER turns that survival strategy into an adaptive control system.”
+## Assets and who makes them
 
-## 1:05–1:30 — Product
+| Asset | Source | Owner |
+|---|---|---|
+| Narration script, word for word, timed to the structure (~480 words) | Written from this plan and `simulation/results/REPORT.md` | Claude, approved by the team |
+| Motion graphics: 34-season chart, Monte Carlo result, field-check comparison, 7-site map, stat cards, name captions, title and end cards | Built in Remotion from `simulation/results/summary.json` | Claude |
+| Dashboard footage (intro, Explore, guided demo) | Frame-by-frame renders of `dashboard/` | Claude |
+| Prototype footage | AI-generated from the master image and Veo prompts | Team member |
+| Stakeholder interviews | Team's own three conversations (`research/stakeholder-notes.md`) | Team |
+| Context footage | `research/media-sources.md` (short clips, credited on screen, listed in the disclosure) | Team |
+| Narration recording | Team member's voice | Team |
+| Assembly timeline with slots for all of the above; English subtitles | Remotion / ffmpeg | Claude |
 
-Explain:
+## Disclosure (on the project page and in the slides)
 
-- state of charge,
-- runway,
-- recharge gap,
-- protected reserve,
-- source routing.
+- Real: simulation, firmware, dashboard, stakeholder conversations.
+- AI-generated: the physical prototype footage, shown as a visualisation of the planned bench setup.
+- Third-party footage: each clip credited on screen and listed.
+- Not yet built: the physical prototype.
 
-## 1:30–2:20 — Demo
+## Upload checklist
 
-Run physical/digital scenario.
-
-## 2:20–2:50 — Research / technical basis
-
-Mention:
-
-- rainwater water balance,
-- multiple source use,
-- reservoir hedging.
-
-## 2:50–3:15 — Impact
-
-Show measurable comparison.
-
-## 3:15–3:35 — Feasibility
-
-Show BOM / deployment path.
-
-## 3:35–3:50 — Closing
-
-> **“BUFFER does not create more rain. It makes every liter of scarce freshwater work where it matters most.”**
+1. Upload to YouTube as **unlisted** at least a few days before the deadline.
+2. Read the **Checks** step: if any clip is set to block the video, replace or cut it and re-upload.
+3. Open the link in a private browser window to confirm it plays.
+4. Keep a backup copy on Google Drive ("anyone with the link can view") and add both links to the project page.
+5. Submit well before 20 November 2026 (the official deadline times conflict; aim for 15 November).
 
 ---
 
