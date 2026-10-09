@@ -1,4 +1,4 @@
-// Feeds controller telemetry into Live rig mode and checks the commands sent back.
+// Feeds controller telemetry into Live device mode and checks the commands sent back.
 // node tools/live-check.mjs <outDir>   (needs the preview server on :5173)
 import { chromium } from 'playwright'
 const out = process.argv[2]

@@ -23,6 +23,16 @@ BUFFER matches the protection of always using the alternative source while using
 stays protected when the alternative dries up. Household values are assumptions until a field pilot measures them.
 Details: [simulation/results/REPORT.md](simulation/results/REPORT.md), [docs/IMPACT.md](docs/IMPACT.md).
 
+## Status
+
+| | |
+|---|---|
+| **Built and tested** | Simulation on real rainfall, ESP32 controller firmware, 3D dashboard (guided demo, Explore, Live device) |
+| **Simulated, not measured** | All household results: household demand, tank size and roof area are assumptions ([research/assumptions.md](research/assumptions.md)) |
+| **Not built yet** | The physical bench prototype (parts list ready, about 5,800 BDT). Prototype footage in the submission video is an AI-generated visualisation of the planned setup |
+| **In progress** | Three stakeholder conversations: a WASH researcher, an NGO field officer and a coastal household ([research/stakeholder-notes.md](research/stakeholder-notes.md)) |
+| **Planned** | Bench tests ([validation/experiments.md](validation/experiments.md)) and a 20-household dry-season pilot ([docs/PILOT_PLAN.md](docs/PILOT_PLAN.md)) |
+
 ## What is in this repository
 
 | Path | Contents | Status |
@@ -30,10 +40,10 @@ Details: [simulation/results/REPORT.md](simulation/results/REPORT.md), [docs/IMP
 | [PROJECT.md](PROJECT.md) | Project brief: problem, research basis, design, plan | |
 | [simulation/](simulation/) | Daily water-balance model, 5 policies, sweeps, Monte Carlo, compliance and sensor-outage runs | 10 tests passing |
 | [firmware/](firmware/) | ESP32 controller: sensing, planning, valve routing, fail-safes, USB telemetry | 12 native tests passing; builds for ESP32 |
-| [dashboard/](dashboard/) | 3D digital twin: guided demo, Explore mode on the model, Live rig mode over Web Serial | Builds; scripted browser checks |
+| [dashboard/](dashboard/) | 3D digital twin: guided demo, Explore mode on the model, Live device mode over Web Serial | Builds; scripted browser checks |
 | [hardware/](hardware/) | Priced bill of materials, wiring and pin map, serial protocol, household retrofit plan | |
-| [validation/](validation/) | Bench test protocol with pass criteria | Not yet run (no physical rig yet) |
-| [research/](research/) | Bibliography, prior-art comparison, assumptions register | |
+| [validation/](validation/) | Bench test protocol with pass criteria | Not yet run (no physical prototype yet) |
+| [research/](research/) | Bibliography, prior-art comparison, assumptions register, stakeholder conversation notes | |
 | [docs/](docs/) | Impact, failure modes, deployment and business model, field pilot plan | |
 | [xylem_global_student_innovation_challenge_2026_research_corpus.md](xylem_global_student_innovation_challenge_2026_research_corpus.md) | Competition research corpus | |
 
@@ -52,4 +62,4 @@ cd dashboard && npm install && npm run dev
 cd firmware && pio test -e native && pio run -e esp32dev
 ```
 
-In the dashboard, switch between **Guided demo**, **Explore** and **Live rig** at the top.
+In the dashboard, switch between **Guided demo**, **Explore** and **Live device** at the top.

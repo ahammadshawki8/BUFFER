@@ -1,11 +1,63 @@
 # BUFFER
 ## Adaptive Freshwater Reserve Management for Climate-Vulnerable Households
 
-> **Project status:** Locked concept / pre-prototype  
+> **Project status (9 October 2026):** Software, simulation and firmware built and tested; physical prototype not built; stakeholder conversations scheduled; submission materials in progress  
 > **Competition:** Xylem Global Student Innovation Challenge 2026  
 > **Track:** University  
-> **Recommended challenge:** **Water Access — Enabling universal access to reliable, affordable WASH services**  
+> **Challenge:** **Water Access — Enabling universal access to reliable, affordable WASH services**  
 > **Primary goal:** Build a Grand Prize-caliber submission that is scientifically grounded, visually demonstrable, feasible to implement, and clearly differentiated from generic “IoT water monitoring” projects.
+
+---
+
+# Build status
+
+This brief was written before anything was built. This section records what now exists, so every
+claim in the submission can be traced to a file. Evidence labels follow §88.
+
+## Built and tested
+
+| Tier (§19) | What exists | Where | Evidence |
+|---|---|---|---|
+| Tier 1-4: model, policy, hedging, uncertainty | Daily water balance on **real rainfall** (NASA POWER, Koyra, 1991-2025, 34 dry seasons); BUFFER rule (§42) against three baselines (§50); tank, household, forecast and dry-pond sweeps; 2,000-run Monte Carlo; advice-compliance and sensor-outage runs | `simulation/` | 10 tests passing; `results/REPORT.md` |
+| Tier 5: controller | ESP32 firmware: two ultrasonic level sensors, two flow sensors, two valves via relays, metered requests, daily flexible allowance, household override, sensor-fault fail-safe, USB telemetry | `firmware/` | 12 native tests passing; compiles for ESP32 (RAM 6.8%, flash 23.1%) |
+| Tier 6: digital twin | 3D dashboard with a guided demo, an Explore mode running the model live, and a Live device mode that mirrors the controller over USB | `dashboard/` | Builds; scripted browser checks |
+| Tier 7: validation plan | 12 bench tests with pass criteria | `validation/experiments.md` | Not yet run |
+| Tier 8: feasibility | Priced bill of materials, wiring, serial protocol, household retrofit plan, failure modes, deployment and business model, field pilot plan | `hardware/`, `docs/` | Documents |
+| Research | Bibliography, prior-art comparison, assumptions register | `research/` | Documents |
+
+## Key results (SIMULATED, real rainfall, assumed household)
+
+5 people, 3,000 L tank, 20 L/day drinking and cooking, 30 L/day flexible use:
+
+| | Without BUFFER | With BUFFER |
+|---|---|---|
+| Shortage days per dry season | 70.5 | 0.5 |
+| Seasons with any shortage (of 34) | 34 | 3 |
+| Chance of a shortage, 2,000 resampled seasons | 99.9% | 8.2% |
+
+- Same protection as always using the alternative source, with 54% less alternative water.
+- Holds when the pond dries March-May (0.5 days against 9.0 for a static rule).
+- Small tanks (1,000-2,000 L) still fall short: BUFFER cannot create water.
+- Advice-only mode loses most of the benefit unless followed nearly every day (80% compliance: 8.1 days), which is why automatic valves matter.
+
+## Not done yet
+
+| Item | Plan |
+|---|---|
+| Physical prototype | Not built (about 5,800 BDT, `hardware/bom.csv`). Prototype footage in the video is an AI-generated visualisation of the planned setup and is disclosed as such in the submission |
+| Stakeholder conversations | Three 15-minute conversations: a WASH researcher, an NGO field officer, a coastal household. Notes go in `research/stakeholder-notes.md` |
+| Field pilot | Planned (`docs/PILOT_PLAN.md`); after the competition |
+| Patent search | Before any "first" or "only" claim (§87) |
+
+## Changes from the original plan
+
+- **Demo numbers.** The original demo scenario (120 L, recharge on day 7 then 9) was not achievable even
+  with drinking water alone. The demo now uses 200 L: conventional use runs dry on day 4.0; BUFFER holds to
+  day 7.0, then 9.0 after the rain is delayed.
+- **The demo script in §27** uses illustrative 24/31/34-day numbers; the submission uses the simulated
+  results above instead.
+- **No machine learning** (§39): the transparent allocation rule performs as well as an oracle that knows
+  the true recharge date, so no model is trained.
 
 ---
 
@@ -908,7 +960,7 @@ Compare conventional policy vs BUFFER.
 
 ## TIER 5 — Bench Hardware Prototype
 
-Minimum viable rig:
+Minimum viable setup:
 
 - two reservoirs
 - two valves
@@ -2662,7 +2714,7 @@ If not, cut it.
 
 **Physical action:** Route appropriate flexible demand away from protected freshwater
 
-**Prototype:** Two-source physical rig + edge controller + digital twin
+**Prototype:** Two-source physical prototype + edge controller + digital twin
 
 **Key research foundation:**
 - household rainwater harvesting,

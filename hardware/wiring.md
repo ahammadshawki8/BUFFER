@@ -74,5 +74,5 @@ relay opens, protecting the relay contacts.
    `TANK_HEIGHT_CM`, `TANK_FULL_GAP_CM`).
 2. **Flow sensors:** run exactly 1 L through each line into a measuring jug and read the pulse count from the
    telemetry; set `FLOW_PULSES_PER_LITRE` (datasheet value 450).
-3. **Scale:** `HOUSEHOLD_LITRES_PER_RIG_LITRE` maps the bench tank to the household reserve it represents
-   (default: 5 L rig = 200 L household).
+3. **Scale:** `HOUSEHOLD_LITRES_PER_BENCH_LITRE` maps the bench tank to the household reserve it represents
+   (default: 5 L bench tank = 200 L household).

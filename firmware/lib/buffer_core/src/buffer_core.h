@@ -26,12 +26,12 @@ struct Household {
 };
 
 // A tank measured by an ultrasonic sensor mounted above it.
-// `scale` converts rig litres to the household litres the rig represents.
+// `scale` converts bench-tank litres to the household litres the bench tank represents.
 struct Tank {
   float height_cm = 20.0f;      // usable water column from outlet to full
   float area_cm2 = 250.0f;      // horizontal cross-section
   float full_gap_cm = 4.0f;     // sensor-to-surface distance when full
-  float scale = 40.0f;          // household litres per rig litre
+  float scale = 40.0f;          // household litres per bench litre
 };
 
 // Household litres held in the tank for a measured sensor-to-surface distance.

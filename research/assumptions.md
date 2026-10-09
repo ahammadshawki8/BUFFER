@@ -17,7 +17,7 @@ and how a field pilot would replace it with a measurement (PROJECT.md §86, §88
 | A10 | Alternative source suitability | Toilet, floor cleaning, selected washing only | PROJECT.md §14; to be pre-qualified per household | Not modelled (quality is outside the model) | Water-quality testing by the partner NGO; local health guidance |
 | A11 | Compliance | Automatic valves: 100%; advice only: 40-100% tested | Valves enforce routing | 0-100% sweep | Pilot logs of overrides and advice followed |
 | A12 | Rainfall | NASA POWER daily PRECTOTCORR, 0.5° grid, Koyra cell | Gridded reanalysis, not a gauge at the house | One cell, 34 seasons | Compare with the nearest BMD rain gauge (Khulna, Satkhira) |
-| A13 | Bench rig scale | 5 L rig tank = 200 L household reserve (×40) | Demo convenience | n/a | n/a (demonstration only) |
+| A13 | Bench prototype scale | 5 L bench tank = 200 L household reserve (×40) | Demo convenience | n/a | n/a (demonstration only) |
 | A14 | Component prices | Retail, October 2026 (hardware/bom.csv) | Bangladeshi online retailers | n/a | Supplier quotes for volume |
 
 ## Results that do **not** depend much on these assumptions

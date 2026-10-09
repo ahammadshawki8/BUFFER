@@ -77,7 +77,7 @@ export const app = {
   scenario: { ...defaultScenario },
   bufferChangedAt: -10, // clock time of the last BUFFER toggle, for the switch animation
   request: null as { endpoint: Endpoint; at: number } | null,
-  // Live rig: telemetry from the ESP32 over Web Serial (or injected in tests).
+  // Live device: telemetry from the ESP32 over Web Serial (or injected in tests).
   live: {
     on: false,
     status: 'idle' as 'idle' | 'connecting' | 'connected' | 'error',

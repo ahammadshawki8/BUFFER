@@ -2,7 +2,7 @@
 
 Tests to run on the physical prototype once it is built (hardware/wiring.md). Each test has a pass
 criterion and a results line to fill in. Results go in `validation/results/` as dated CSV files of the
-telemetry stream (copy from the dashboard's Live rig mode or a serial log).
+telemetry stream (copy from the dashboard's Live device mode or a serial log).
 
 Status: **not yet run.** The controller logic behind every test already passes its native unit tests
 (`firmware/test/test_core`, 12 tests) and compiles for the ESP32 (`pio run -e esp32dev`).
@@ -10,7 +10,7 @@ Status: **not yet run.** The controller logic behind every test already passes i
 ## Setup
 
 - Fill both tanks to the 4 L mark; set `{"day_ms":60000}` so one controller day lasts one minute.
-- Connect the dashboard in Live rig mode to record telemetry.
+- Connect the dashboard in Live device mode to record telemetry.
 
 ## Tests
 

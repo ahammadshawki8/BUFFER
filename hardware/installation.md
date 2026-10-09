@@ -1,6 +1,6 @@
 # Household installation (field version)
 
-The bench rig proves the logic. In a home, BUFFER is a **retrofit on an existing rainwater
+The bench prototype proves the logic. In a home, BUFFER is a **retrofit on an existing rainwater
 system**: it adds a sensor, two valves and a controller box. It needs no new tank and no new water source.
 
 ## Layout

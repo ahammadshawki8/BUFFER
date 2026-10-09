@@ -1,4 +1,4 @@
-// Live rig link: reads the ESP32's JSON telemetry over Web Serial (Chrome/Edge)
+// Live device link: reads the ESP32's JSON telemetry over Web Serial (Chrome/Edge)
 // and sends commands back. Protocol: hardware/serial-protocol.md
 import { app, type Telemetry } from './app'
 import { clock } from './clock'

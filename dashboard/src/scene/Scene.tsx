@@ -87,7 +87,7 @@ const shots = [
 ] as const
 
 // Where the scripted camera is looking; shared with the free camera.
-const rigTarget = new THREE.Vector3()
+const camTarget = new THREE.Vector3()
 const HQ = clock.capture
 
 function scripted(t: number, aspectZoom: number, pos: THREE.Vector3) {
@@ -96,17 +96,17 @@ function scripted(t: number, aspectZoom: number, pos: THREE.Vector3) {
   const a = shots[Math.max(0, i - 1)]
   const b = shots[i]
   const k = i === 0 ? 1 : smooth(b.at, b.at + 1.8, t)
-  rigTarget.set(lerp(a.target[0], b.target[0], k) + 1.25, 0, lerp(a.target[1], b.target[1], k) - 1.05)
+  camTarget.set(lerp(a.target[0], b.target[0], k) + 1.25, 0, lerp(a.target[1], b.target[1], k) - 1.05)
   const az = lerp(a.az, b.az, k) + Math.sin(t * 0.21) * 0.022
   const zoom = lerp(a.zoom, b.zoom, k) * (1 + Math.sin(t * 0.33) * 0.006)
   const r = 30
-  pos.set(rigTarget.x + Math.sin(az) * r, 21, rigTarget.z + Math.cos(az) * r)
+  pos.set(camTarget.x + Math.sin(az) * r, 21, camTarget.z + Math.cos(az) * r)
   return aspectZoom * 61 * zoom
 }
 
 // Plays the scripted camera; while paused, hands the camera to the viewer.
 // On resume it eases back from wherever the viewer left it.
-function CameraRig() {
+function CameraDirector() {
   const { camera, size } = useThree()
   const playing = usePlaying()
   const controls = useRef<OrbitControlsImpl>(null)
@@ -117,7 +117,7 @@ function CameraRig() {
   useEffect(() => {
     const cam = camera as THREE.OrthographicCamera
     if (!playing && controls.current) {
-      controls.current.target.copy(rigTarget)
+      controls.current.target.copy(camTarget)
       controls.current.update()
     }
     if (playing && controls.current) {
@@ -129,12 +129,12 @@ function CameraRig() {
     if (!clock.playing && !clock.capture) return
     const cam = camera as THREE.OrthographicCamera
     const zoom = scripted(clock.t, size.height / 1080, pos)
-    look.copy(rigTarget)
+    look.copy(camTarget)
     const f = from.current
     if (f && !HQ) {
       const k = smooth(0, 1, (performance.now() - f.at) / 1100)
       pos.lerpVectors(f.pos, pos, k)
-      look.lerpVectors(f.target, rigTarget, k)
+      look.lerpVectors(f.target, camTarget, k)
       cam.zoom = lerp(f.zoom, zoom, k)
       if (k >= 1) from.current = null
     } else cam.zoom = zoom
@@ -971,7 +971,7 @@ function SceneLabels() {
 
 /* ---------- assembled scene ---------- */
 
-// Live rig: tank fill from the controller's measured litres.
+// Live device: tank fill from the controller's measured litres.
 function liveLevel(which: 'fresh' | 'alt') {
   const tm = app.live.telemetry
   if (!tm) return 0.5
@@ -982,7 +982,7 @@ function liveLevel(which: 'fresh' | 'alt') {
 export function Scene() {
   return (
     <>
-      <CameraRig />
+      <CameraDirector />
       <color attach="background" args={['#DDE7EA']} />
       <Lighting />
       <Base />

@@ -38,7 +38,7 @@ numbers before they are used for funding decisions.
 
 | Stage | Scale | Goal | Exit criterion |
 |---|---|---|---|
-| 1. Bench validation | 1 rig | Repeatable switching; sensor and flow calibration | 50 consecutive requests routed correctly (validation/experiments.md) |
+| 1. Bench validation | 1 prototype | Repeatable switching; sensor and flow calibration | 50 consecutive requests routed correctly (validation/experiments.md) |
 | 2. Observational pilot | 10-20 households, Lite | Measure real demand, tank sizes, sources, overrides | One full dry season of data |
 | 3. Assisted control pilot | 10-20 households, Control | Measure shortage days against matched households without BUFFER | Fewer shortage days with no safety incidents |
 | 4. Programme integration | 100-1,000 households with an NGO partner | Cost, maintenance, training at scale | Unit cost and maintenance plan agreed with the partner |

@@ -49,7 +49,7 @@ function Brand({ f }: { f: Frame }) {
         <li className="live">
           <i /> Controller online
         </li>
-        {f.live && <li className="auto">Live rig</li>}
+        {f.live && <li className="auto">Live device</li>}
         {!f.live && f.bufferOn && <li className="auto">{f.advisory ? 'Advice only' : f.override ? 'Household override' : 'Automatic routing'}</li>}
       </ul>
     </div>
@@ -73,7 +73,7 @@ function ModeSwitch({ view }: { view: 'demo' | 'explore' | 'live' }) {
         Explore
       </button>
       <button aria-pressed={view === 'live'} onClick={() => go('live')}>
-        Live rig
+        Live device
       </button>
     </div>
   )

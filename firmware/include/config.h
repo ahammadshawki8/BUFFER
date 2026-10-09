@@ -31,7 +31,7 @@
 #define TANK_HEIGHT_CM 20.0f
 #define TANK_AREA_CM2 250.0f
 #define TANK_FULL_GAP_CM 4.0f
-#define HOUSEHOLD_LITRES_PER_RIG_LITRE 40.0f  // 5 L rig tank ~ 200 L household reserve
+#define HOUSEHOLD_LITRES_PER_BENCH_LITRE 40.0f  // 5 L bench tank ~ 200 L household reserve
 
 // Household plan (household litres per day). Same values as the dashboard demo.
 #define CRITICAL_LPD 20.0f
@@ -40,7 +40,7 @@
 #define DEFAULT_RAIN_DAYS 7.0f
 
 // One request dispenses a metered dose; a dry line or stuck valve times out.
-#define DOSE_RIG_LITRES 0.15f
+#define DOSE_BENCH_LITRES 0.15f
 #define DOSE_TIMEOUT_MS 10000
 #define NO_FLOW_CHECK_MS 3000
 

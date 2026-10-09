@@ -35,7 +35,7 @@ struct Dispense {
   Source source = Source::None;
   unsigned long started = 0;
   uint32_t start_pulses = 0;
-  float rig_litres = 0;
+  float bench_litres = 0;
 };
 static Dispense active;
 static char last_event[48] = "boot";
@@ -92,7 +92,7 @@ static void startRequest(Use u) {
   noInterrupts();
   active.start_pulses = s == Source::Fresh ? pulses_fresh : pulses_alt;
   interrupts();
-  active.rig_litres = 0;
+  active.bench_litres = 0;
   setValves(s);
   snprintf(last_event, sizeof last_event, "open:%s:%s", useName(u), sourceName(s));
 }
@@ -100,7 +100,7 @@ static void startRequest(Use u) {
 static void finishRequest(const char* why) {
   setValves(Source::None);
   if (active.source == Source::Fresh && !isCritical(active.use)) {
-    controller.addFlexibleFresh(active.rig_litres * HOUSEHOLD_LITRES_PER_RIG_LITRE);
+    controller.addFlexibleFresh(active.bench_litres * HOUSEHOLD_LITRES_PER_BENCH_LITRE);
   }
   snprintf(last_event, sizeof last_event, "%s:%s", why, useName(active.use));
   active = Dispense();
@@ -111,10 +111,10 @@ static void serviceRequest() {
   noInterrupts();
   const uint32_t now_pulses = active.source == Source::Fresh ? pulses_fresh : pulses_alt;
   interrupts();
-  active.rig_litres = (now_pulses - active.start_pulses) / FLOW_PULSES_PER_LITRE;
+  active.bench_litres = (now_pulses - active.start_pulses) / FLOW_PULSES_PER_LITRE;
   const unsigned long held = millis() - active.started;
-  if (active.rig_litres >= DOSE_RIG_LITRES) finishRequest("done");
-  else if (held > NO_FLOW_CHECK_MS && active.rig_litres < 0.005f) finishRequest("noflow");
+  if (active.bench_litres >= DOSE_BENCH_LITRES) finishRequest("done");
+  else if (held > NO_FLOW_CHECK_MS && active.bench_litres < 0.005f) finishRequest("noflow");
   else if (held > DOSE_TIMEOUT_MS) finishRequest("timeout");
 }
 
@@ -222,7 +222,7 @@ void setup() {
   tank.height_cm = TANK_HEIGHT_CM;
   tank.area_cm2 = TANK_AREA_CM2;
   tank.full_gap_cm = TANK_FULL_GAP_CM;
-  tank.scale = HOUSEHOLD_LITRES_PER_RIG_LITRE;
+  tank.scale = HOUSEHOLD_LITRES_PER_BENCH_LITRE;
   controller.hh.critical_lpd = CRITICAL_LPD;
   controller.hh.flexible_lpd = FLEXIBLE_LPD;
   controller.hh.reserve_l = RESERVE_L;

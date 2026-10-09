@@ -8,7 +8,7 @@ Runs the BUFFER bench prototype on its own, with no laptop or internet needed:
 - keeps a daily account of freshwater spent on flexible uses
 - obeys a household override switch and an "alternative available" switch
 - on a level-sensor fault, keeps drinking water flowing and protects the freshwater reserve
-- streams JSON telemetry over USB for the dashboard's Live rig mode ([protocol](../hardware/serial-protocol.md))
+- streams JSON telemetry over USB for the dashboard's Live device mode ([protocol](../hardware/serial-protocol.md))
 
 ## Layout
 

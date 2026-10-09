@@ -16,7 +16,7 @@ the link only mirrors its state and accepts a few commands.
 | Field | Meaning |
 |---|---|
 | `t` | Milliseconds since boot |
-| `fresh_l`, `alt_l` | Household-equivalent litres in each tank (rig litres × scale) |
+| `fresh_l`, `alt_l` | Household-equivalent litres in each tank (bench-tank litres × scale) |
 | `sensor_ok` | 0 when the freshwater level sensor has failed five readings in a row |
 | `alt_ok` | Alternative source usable (switch closed and not disabled by command) |
 | `rain_days` | Days until the next reliable recharge, counting down each controller day |
@@ -27,7 +27,7 @@ the link only mirrors its state and accepts a few commands.
 | `conv_runway` | Runway if every use drew freshwater (for comparison) |
 | `flex_used` | Freshwater already spent on flexible uses today |
 | `valve_a`, `valve_b` | 1 while open |
-| `flow_a`, `flow_b` | Measured flow, L/min (rig scale) |
+| `flow_a`, `flow_b` | Measured flow, L/min (bench scale) |
 | `request`, `source` | Use being served and the source chosen |
 | `override` | 1 while the household override switch forces freshwater |
 | `critical`, `flexible`, `reserve` | The household plan the controller is using |

@@ -16,7 +16,7 @@ export const steps = [
   { at: 38, title: 'The outcome', text: 'Same stored water. Different outcome.' },
 ] as const
 
-// Demand requests sent to the rig, in order.
+// Demand requests sent to the prototype, in order.
 const requests: { from: number; to: number; endpoint: Endpoint }[] = [
   { from: 9, to: 11.6, endpoint: 'toilet' },
   { from: 12, to: 14.6, endpoint: 'floor' },
@@ -63,7 +63,7 @@ export interface Frame {
   allowanceShown: number
 }
 
-// Seconds of rig flow drawn from a source up to time t (drives tank levels).
+// Seconds of prototype flow drawn from a source up to time t (drives tank levels).
 export function flowSeconds(t: number, source: Source) {
   let s = 0
   for (const q of requests) {
@@ -187,7 +187,7 @@ function exploreFrame(t: number): Frame {
   }
 }
 
-// Live rig: everything shown comes from the controller's own telemetry.
+// Live device: everything shown comes from the controller's own telemetry.
 function liveFrame(t: number): Frame {
   const tm = app.live.telemetry
   const rainDay = tm ? tm.rain_days : 7
