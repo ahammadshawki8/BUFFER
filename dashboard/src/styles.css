@@ -340,7 +340,7 @@ button {
 
 .panel {
   position: absolute;
-  background: rgb(247 250 250 / 0.94);
+  background: var(--paper);
   border: 1px solid var(--line);
   border-radius: 1rem;
   box-shadow: var(--shadow);
@@ -364,11 +364,9 @@ button {
 }
 
 .legend {
-  position: absolute;
-  top: 0.1rem;
-  right: 2rem;
-  display: grid;
-  gap: 0.2rem;
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.35rem;
   font-size: 0.78rem;
   font-weight: 650;
 }
@@ -1506,19 +1504,35 @@ html.capture * {
   transform-origin: bottom right;
 }
 
-.card-close {
+.card-tools {
   position: absolute;
   top: 0.65rem;
   right: 0.65rem;
   z-index: 1;
+  display: flex;
+  gap: 0.3rem;
+}
+
+.card-close,
+.card-grip {
   display: grid;
   place-items: center;
   width: 1.7rem;
   height: 1.7rem;
+  padding: 0;
   border: 1px solid var(--line);
   border-radius: 50%;
   background: var(--paper);
   cursor: pointer;
+}
+
+.card-grip {
+  cursor: grab;
+}
+
+.card-grip svg {
+  width: 0.95rem;
+  fill: var(--ink-3);
 }
 
 .card-close svg {
@@ -1528,6 +1542,7 @@ html.capture * {
   stroke-linecap: round;
 }
 
+.card-grip:hover,
 .card-close:hover {
   background: #fff;
   border-color: var(--ink-3);
@@ -1575,7 +1590,22 @@ html.capture * {
 }
 
 .card-fab:hover {
-  transform: scale(1.07);
+  scale: 1.07;
+}
+
+.panel.is-draggable header {
+  cursor: grab;
+}
+
+.panel.is-dragging,
+.panel.is-dragging header,
+.panel.is-dragging .card-grip {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.panel.is-dragging {
+  box-shadow: 0 1.4rem 3rem rgb(23 49 59 / 0.22), 0 0.2rem 0.5rem rgb(23 49 59 / 0.1);
 }
 
 @keyframes card-in {
@@ -1594,7 +1624,7 @@ html.capture * {
 
 @keyframes fab-float {
   50% {
-    translate: 0 -0.3rem;
+    transform: translateY(-0.3rem);
   }
 }
 
