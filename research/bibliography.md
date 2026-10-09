@@ -7,6 +7,12 @@
 - **Drinking water management: Challenges and adaptive strategies in salinization-affected coastal communities of Bangladesh (2025).** *Cleaner Water*, 100171. doi:10.1016/j.clwat.2025.100171. https://www.sciencedirect.com/science/article/pii/S2950263225001097
   *Koyra: 100% of households use rainwater in the monsoon; only 27% keep year-round access.*
 - **Saha, A. et al. (2024).** Decision support system for community managed rainwater harvesting: A case study in the salinity-prone coastal region of Bangladesh. *Heliyon*, 10(9), e30455. doi:10.1016/j.heliyon.2024.e30455. https://pmc.ncbi.nlm.nih.gov/articles/PMC11106838/
+- **Construction and Evaluation of Rainwater Harvesting System for Domestic Use in a Remote and Rural Area of Khulna, Bangladesh.** https://pmc.ncbi.nlm.nih.gov/articles/PMC4897113/
+  *4-person household, 6 L/person/day for drinking and cooking, 40 m² roof, runoff coefficient 0.8, 5-month dry period. Source of the literature-household values.*
+- **UNDP, Gender-responsive Coastal Adaptation (GCA): "Water crisis in the Southwest of Bangladesh: 'Paani Apa' to the rescue".** https://www.adaptation-undp.org/water-crisis-southwest-bangladesh-paani-apa-rescue
+  *Each family received a 2,000 L rainwater tank; survey of 66,234 households in Koyra, Dacope, Paikgachha, Assasuni and Shyamnagar.*
+- **Rainwater storage in Sutarkhali, Dacope (116 households), Environment, Development and Sustainability (2026),** as reported by Prothom Alo, 8 October 2026: https://en.prothomalo.com/bangladesh/cxtwlpjmo7
+  *91% of households could not store enough for the whole year; average storage period 4.7 months; reliable water unavailable 2.84 months a year in Koyra and 4.65 months on average across five upazilas.*
 - **WaterAid Bangladesh (2025).** Household rainwater harvesting system (Paikgacha: 29 systems, 123 people). https://www.wateraid.org/bd/publications/household-rainwater-harvesting-system
 - **BRAC Institute of Governance and Development.** Enhancing Safe Drinking Water Security and Climate Resilience Through Rainwater Harvesting. https://bigd.bracu.ac.bd/study/enhancing-safe-drinking-water-security-and-climate-resilience-through-rainwater-harvesting/
 

@@ -39,6 +39,13 @@ claim in the submission can be traced to a file. Evidence labels follow §88.
 - Holds when the pond dries March-May (0.5 days against 9.0 for a static rule).
 - Small tanks (1,000-2,000 L) still fall short: BUFFER cannot create water.
 - Advice-only mode loses most of the benefit unless followed nearly every day (80% compliance: 8.1 days), which is why automatic valves matter.
+- **Field check:** run the way households behave today, with published household values, the model reproduces four of
+  five published field figures from Khulna for 500-3,000 L tanks (4.7-month storage, 91% running short, 2.84 months
+  without water in Koyra, 27% year-round access); it underestimates the five-upazila average of 4.65 months.
+- **Published household values** (4 people, 6 L/person/day, 2,000 L UNDP tank): 88 → 31 shortage days; the rest is a
+  storage gap no routing can close. 3,000 L: 67 → 4 days.
+- **Other locations:** five Bangladeshi coastal sites give the same result (59-71 → 0-0.5 days). Drought-prone Rajshahi and
+  Chennai need a more cautious forecast setting.
 
 ## Not done yet
 

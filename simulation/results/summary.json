@@ -3,7 +3,8 @@
     "key": "koyra",
     "name": "Koyra, Khulna, Bangladesh",
     "lat": 22.34,
-    "lon": 89.3
+    "lon": 89.3,
+    "group": "southwest coast"
   },
   "rainfall_source": "NASA POWER daily PRECTOTCORR, 1991-06-01 to 2025-05-31 (34 dry seasons)",
   "household": {
@@ -792,6 +793,606 @@
     "mean_alt_l": 5094,
     "mean_flex_fresh_l": 5864,
     "mean_flex_cut_l": 0
+  },
+  "field_check": {
+    "observed": {
+      "storage_months": {
+        "value": 4.7,
+        "where": "Sutarkhali, Dacope (Khulna), 116 households",
+        "source": "Environment, Development and Sustainability, 2026, reported by Prothom Alo, 8 Oct 2026"
+      },
+      "share_not_enough_all_year": {
+        "value": 0.91,
+        "where": "Sutarkhali, Dacope (Khulna), 116 households",
+        "source": "same study"
+      },
+      "months_without_reliable_water_koyra": {
+        "value": 2.84,
+        "where": "Koyra; survey of 66,234 households in Koyra, Dacope, Paikgachha, Assasuni and Shyamnagar",
+        "source": "UNDP Gender-responsive Coastal Adaptation, https://www.adaptation-undp.org/water-crisis-southwest-bangladesh-paani-apa-rescue"
+      },
+      "months_without_reliable_water_5_upazilas": {
+        "value": 4.65,
+        "where": "five-upazila average, same survey",
+        "source": "same survey"
+      },
+      "share_year_round_koyra": {
+        "value": 0.27,
+        "where": "Koyra",
+        "source": "Cleaner Water, 2025, doi:10.1016/j.clwat.2025.100171"
+      }
+    },
+    "modelled_by_tank": {
+      "500": {
+        "storage_months": 0.7,
+        "share_not_enough_all_year": 1.0,
+        "months_without_water": 3.2
+      },
+      "1000": {
+        "storage_months": 1.5,
+        "share_not_enough_all_year": 0.97,
+        "months_without_water": 2.27
+      },
+      "1500": {
+        "storage_months": 2.3,
+        "share_not_enough_all_year": 0.91,
+        "months_without_water": 1.62
+      },
+      "2000": {
+        "storage_months": 3.3,
+        "share_not_enough_all_year": 0.85,
+        "months_without_water": 1.0
+      },
+      "3000": {
+        "storage_months": 5.2,
+        "share_not_enough_all_year": 0.24,
+        "months_without_water": 0.13
+      }
+    },
+    "household": "4 people, 24 L/day drinking and cooking only, 40 m2 roof (literature)"
+  },
+  "literature_household": {
+    "household": {
+      "people": 4,
+      "critical_lpcd": 6.0,
+      "flexible_lpcd": 6.0,
+      "tank_l": 2000.0,
+      "roof_m2": 40.0,
+      "runoff": 0.8,
+      "first_flush_mm": 0.5,
+      "reserve_days": 3.0,
+      "alt_dry_months": [],
+      "critical_l_day": 24.0,
+      "flexible_l_day": 24.0
+    },
+    "tank_2000": {
+      "conventional": {
+        "mean_shortage_days": 88.1,
+        "median_shortage_days": 92.5,
+        "max_shortage_days": 133,
+        "years_with_shortage": 34,
+        "years": 34,
+        "mean_shortage_l": 2062,
+        "mean_alt_l": 2160,
+        "mean_flex_fresh_l": 6607,
+        "mean_flex_cut_l": 0
+      },
+      "always_alt": {
+        "mean_shortage_days": 30.5,
+        "median_shortage_days": 30.0,
+        "max_shortage_days": 81,
+        "years_with_shortage": 29,
+        "years": 34,
+        "mean_shortage_l": 699,
+        "mean_alt_l": 8766,
+        "mean_flex_fresh_l": 0,
+        "mean_flex_cut_l": 0
+      },
+      "threshold": {
+        "mean_shortage_days": 64.7,
+        "median_shortage_days": 65.0,
+        "max_shortage_days": 118,
+        "years_with_shortage": 33,
+        "years": 34,
+        "mean_shortage_l": 1499,
+        "mean_alt_l": 2897,
+        "mean_flex_fresh_l": 5869,
+        "mean_flex_cut_l": 0
+      },
+      "buffer": {
+        "mean_shortage_days": 30.9,
+        "median_shortage_days": 30.0,
+        "max_shortage_days": 81,
+        "years_with_shortage": 29,
+        "years": 34,
+        "mean_shortage_l": 708,
+        "mean_alt_l": 4456,
+        "mean_flex_fresh_l": 4310,
+        "mean_flex_cut_l": 0
+      }
+    },
+    "tank_3000": {
+      "conventional": {
+        "mean_shortage_days": 67.1,
+        "median_shortage_days": 71.5,
+        "max_shortage_days": 112,
+        "years_with_shortage": 33,
+        "years": 34,
+        "mean_shortage_l": 1570,
+        "mean_alt_l": 1657,
+        "mean_flex_fresh_l": 7110,
+        "mean_flex_cut_l": 0
+      },
+      "always_alt": {
+        "mean_shortage_days": 4.0,
+        "median_shortage_days": 0.0,
+        "max_shortage_days": 39,
+        "years_with_shortage": 8,
+        "years": 34,
+        "mean_shortage_l": 93,
+        "mean_alt_l": 8766,
+        "mean_flex_fresh_l": 0,
+        "mean_flex_cut_l": 0
+      },
+      "threshold": {
+        "mean_shortage_days": 39.6,
+        "median_shortage_days": 38.0,
+        "max_shortage_days": 91,
+        "years_with_shortage": 30,
+        "years": 34,
+        "mean_shortage_l": 912,
+        "mean_alt_l": 2591,
+        "mean_flex_fresh_l": 6175,
+        "mean_flex_cut_l": 0
+      },
+      "buffer": {
+        "mean_shortage_days": 4.0,
+        "median_shortage_days": 0.0,
+        "max_shortage_days": 39,
+        "years_with_shortage": 8,
+        "years": 34,
+        "mean_shortage_l": 93,
+        "mean_alt_l": 4238,
+        "mean_flex_fresh_l": 4528,
+        "mean_flex_cut_l": 0
+      }
+    }
+  },
+  "sites": {
+    "koyra": {
+      "name": "Koyra, Khulna, Bangladesh",
+      "group": "southwest coast",
+      "annual_rain_mm": 1817,
+      "results": {
+        "conventional": {
+          "mean_shortage_days": 70.5,
+          "median_shortage_days": 75.5,
+          "max_shortage_days": 114,
+          "years_with_shortage": 34,
+          "years": 34,
+          "mean_shortage_l": 1376,
+          "mean_alt_l": 2176,
+          "mean_flex_fresh_l": 8782,
+          "mean_flex_cut_l": 0
+        },
+        "always_alt": {
+          "mean_shortage_days": 0.5,
+          "median_shortage_days": 0.0,
+          "max_shortage_days": 9,
+          "years_with_shortage": 3,
+          "years": 34,
+          "mean_shortage_l": 9,
+          "mean_alt_l": 10958,
+          "mean_flex_fresh_l": 0,
+          "mean_flex_cut_l": 0
+        },
+        "threshold": {
+          "mean_shortage_days": 32.1,
+          "median_shortage_days": 30.5,
+          "max_shortage_days": 86,
+          "years_with_shortage": 29,
+          "years": 34,
+          "mean_shortage_l": 616,
+          "mean_alt_l": 3277,
+          "mean_flex_fresh_l": 7681,
+          "mean_flex_cut_l": 0
+        },
+        "buffer": {
+          "mean_shortage_days": 0.5,
+          "median_shortage_days": 0.0,
+          "max_shortage_days": 9,
+          "years_with_shortage": 3,
+          "years": 34,
+          "mean_shortage_l": 9,
+          "mean_alt_l": 5086,
+          "mean_flex_fresh_l": 5872,
+          "mean_flex_cut_l": 0
+        },
+        "buffer_cautious": {
+          "mean_shortage_days": 0.5,
+          "median_shortage_days": 0.0,
+          "max_shortage_days": 9,
+          "years_with_shortage": 3,
+          "years": 34,
+          "mean_shortage_l": 9,
+          "mean_alt_l": 5442,
+          "mean_flex_fresh_l": 5516,
+          "mean_flex_cut_l": 0
+        }
+      }
+    },
+    "kuakata": {
+      "name": "Kuakata, Patuakhali, Bangladesh",
+      "group": "south-central coast",
+      "annual_rain_mm": 2536,
+      "results": {
+        "conventional": {
+          "mean_shortage_days": 65.9,
+          "median_shortage_days": 69.5,
+          "max_shortage_days": 112,
+          "years_with_shortage": 33,
+          "years": 34,
+          "mean_shortage_l": 1277,
+          "mean_alt_l": 2032,
+          "mean_flex_fresh_l": 8926,
+          "mean_flex_cut_l": 0
+        },
+        "always_alt": {
+          "mean_shortage_days": 0.1,
+          "median_shortage_days": 0.0,
+          "max_shortage_days": 3,
+          "years_with_shortage": 1,
+          "years": 34,
+          "mean_shortage_l": 1,
+          "mean_alt_l": 10958,
+          "mean_flex_fresh_l": 0,
+          "mean_flex_cut_l": 0
+        },
+        "threshold": {
+          "mean_shortage_days": 30.3,
+          "median_shortage_days": 27.5,
+          "max_shortage_days": 72,
+          "years_with_shortage": 29,
+          "years": 34,
+          "mean_shortage_l": 576,
+          "mean_alt_l": 3019,
+          "mean_flex_fresh_l": 7939,
+          "mean_flex_cut_l": 0
+        },
+        "buffer": {
+          "mean_shortage_days": 0.1,
+          "median_shortage_days": 0.0,
+          "max_shortage_days": 3,
+          "years_with_shortage": 1,
+          "years": 34,
+          "mean_shortage_l": 1,
+          "mean_alt_l": 4787,
+          "mean_flex_fresh_l": 6171,
+          "mean_flex_cut_l": 0
+        },
+        "buffer_cautious": {
+          "mean_shortage_days": 0.1,
+          "median_shortage_days": 0.0,
+          "max_shortage_days": 3,
+          "years_with_shortage": 1,
+          "years": 34,
+          "mean_shortage_l": 1,
+          "mean_alt_l": 5187,
+          "mean_flex_fresh_l": 5771,
+          "mean_flex_cut_l": 0
+        }
+      }
+    },
+    "bhola": {
+      "name": "Bhola, Bangladesh",
+      "group": "south-central coast",
+      "annual_rain_mm": 2516,
+      "results": {
+        "conventional": {
+          "mean_shortage_days": 64.3,
+          "median_shortage_days": 67.0,
+          "max_shortage_days": 106,
+          "years_with_shortage": 34,
+          "years": 34,
+          "mean_shortage_l": 1251,
+          "mean_alt_l": 1980,
+          "mean_flex_fresh_l": 8978,
+          "mean_flex_cut_l": 0
+        },
+        "always_alt": {
+          "mean_shortage_days": 0.0,
+          "median_shortage_days": 0.0,
+          "max_shortage_days": 0,
+          "years_with_shortage": 0,
+          "years": 34,
+          "mean_shortage_l": 0,
+          "mean_alt_l": 10958,
+          "mean_flex_fresh_l": 0,
+          "mean_flex_cut_l": 0
+        },
+        "threshold": {
+          "mean_shortage_days": 30.4,
+          "median_shortage_days": 29.5,
+          "max_shortage_days": 69,
+          "years_with_shortage": 28,
+          "years": 34,
+          "mean_shortage_l": 577,
+          "mean_alt_l": 2922,
+          "mean_flex_fresh_l": 8036,
+          "mean_flex_cut_l": 0
+        },
+        "buffer": {
+          "mean_shortage_days": 0.0,
+          "median_shortage_days": 0.0,
+          "max_shortage_days": 0,
+          "years_with_shortage": 0,
+          "years": 34,
+          "mean_shortage_l": 0,
+          "mean_alt_l": 4738,
+          "mean_flex_fresh_l": 6220,
+          "mean_flex_cut_l": 0
+        },
+        "buffer_cautious": {
+          "mean_shortage_days": 0.0,
+          "median_shortage_days": 0.0,
+          "max_shortage_days": 0,
+          "years_with_shortage": 0,
+          "years": 34,
+          "mean_shortage_l": 0,
+          "mean_alt_l": 5206,
+          "mean_flex_fresh_l": 5752,
+          "mean_flex_cut_l": 0
+        }
+      }
+    },
+    "hatiya": {
+      "name": "Hatiya, Noakhali, Bangladesh",
+      "group": "southeast coast",
+      "annual_rain_mm": 2759,
+      "results": {
+        "conventional": {
+          "mean_shortage_days": 63.6,
+          "median_shortage_days": 62.5,
+          "max_shortage_days": 105,
+          "years_with_shortage": 34,
+          "years": 34,
+          "mean_shortage_l": 1243,
+          "mean_alt_l": 1960,
+          "mean_flex_fresh_l": 8998,
+          "mean_flex_cut_l": 0
+        },
+        "always_alt": {
+          "mean_shortage_days": 0.1,
+          "median_shortage_days": 0.0,
+          "max_shortage_days": 3,
+          "years_with_shortage": 1,
+          "years": 34,
+          "mean_shortage_l": 2,
+          "mean_alt_l": 10958,
+          "mean_flex_fresh_l": 0,
+          "mean_flex_cut_l": 0
+        },
+        "threshold": {
+          "mean_shortage_days": 31.7,
+          "median_shortage_days": 27.5,
+          "max_shortage_days": 78,
+          "years_with_shortage": 29,
+          "years": 34,
+          "mean_shortage_l": 606,
+          "mean_alt_l": 2891,
+          "mean_flex_fresh_l": 8066,
+          "mean_flex_cut_l": 0
+        },
+        "buffer": {
+          "mean_shortage_days": 0.1,
+          "median_shortage_days": 0.0,
+          "max_shortage_days": 3,
+          "years_with_shortage": 1,
+          "years": 34,
+          "mean_shortage_l": 2,
+          "mean_alt_l": 4598,
+          "mean_flex_fresh_l": 6360,
+          "mean_flex_cut_l": 0
+        },
+        "buffer_cautious": {
+          "mean_shortage_days": 0.1,
+          "median_shortage_days": 0.0,
+          "max_shortage_days": 3,
+          "years_with_shortage": 1,
+          "years": 34,
+          "mean_shortage_l": 2,
+          "mean_alt_l": 5136,
+          "mean_flex_fresh_l": 5822,
+          "mean_flex_cut_l": 0
+        }
+      }
+    },
+    "coxsbazar": {
+      "name": "Cox's Bazar, Bangladesh",
+      "group": "southeast coast",
+      "annual_rain_mm": 4528,
+      "results": {
+        "conventional": {
+          "mean_shortage_days": 58.9,
+          "median_shortage_days": 60.5,
+          "max_shortage_days": 110,
+          "years_with_shortage": 34,
+          "years": 34,
+          "mean_shortage_l": 1156,
+          "mean_alt_l": 1804,
+          "mean_flex_fresh_l": 9153,
+          "mean_flex_cut_l": 0
+        },
+        "always_alt": {
+          "mean_shortage_days": 0.1,
+          "median_shortage_days": 0.0,
+          "max_shortage_days": 3,
+          "years_with_shortage": 1,
+          "years": 34,
+          "mean_shortage_l": 1,
+          "mean_alt_l": 10958,
+          "mean_flex_fresh_l": 0,
+          "mean_flex_cut_l": 0
+        },
+        "threshold": {
+          "mean_shortage_days": 30.2,
+          "median_shortage_days": 32.5,
+          "max_shortage_days": 72,
+          "years_with_shortage": 28,
+          "years": 34,
+          "mean_shortage_l": 584,
+          "mean_alt_l": 2613,
+          "mean_flex_fresh_l": 8345,
+          "mean_flex_cut_l": 0
+        },
+        "buffer": {
+          "mean_shortage_days": 0.5,
+          "median_shortage_days": 0.0,
+          "max_shortage_days": 10,
+          "years_with_shortage": 3,
+          "years": 34,
+          "mean_shortage_l": 10,
+          "mean_alt_l": 4010,
+          "mean_flex_fresh_l": 6948,
+          "mean_flex_cut_l": 0
+        },
+        "buffer_cautious": {
+          "mean_shortage_days": 0.1,
+          "median_shortage_days": 0.0,
+          "max_shortage_days": 4,
+          "years_with_shortage": 1,
+          "years": 34,
+          "mean_shortage_l": 2,
+          "mean_alt_l": 4479,
+          "mean_flex_fresh_l": 6479,
+          "mean_flex_cut_l": 0
+        }
+      }
+    },
+    "rajshahi": {
+      "name": "Rajshahi, Bangladesh",
+      "group": "different climate: drought-prone northwest",
+      "annual_rain_mm": 1264,
+      "results": {
+        "conventional": {
+          "mean_shortage_days": 92.1,
+          "median_shortage_days": 86.0,
+          "max_shortage_days": 178,
+          "years_with_shortage": 34,
+          "years": 34,
+          "mean_shortage_l": 1791,
+          "mean_alt_l": 2848,
+          "mean_flex_fresh_l": 8110,
+          "mean_flex_cut_l": 0
+        },
+        "always_alt": {
+          "mean_shortage_days": 3.8,
+          "median_shortage_days": 0.0,
+          "max_shortage_days": 45,
+          "years_with_shortage": 7,
+          "years": 34,
+          "mean_shortage_l": 72,
+          "mean_alt_l": 10958,
+          "mean_flex_fresh_l": 0,
+          "mean_flex_cut_l": 0
+        },
+        "threshold": {
+          "mean_shortage_days": 49.9,
+          "median_shortage_days": 46.0,
+          "max_shortage_days": 130,
+          "years_with_shortage": 32,
+          "years": 34,
+          "mean_shortage_l": 954,
+          "mean_alt_l": 4044,
+          "mean_flex_fresh_l": 6914,
+          "mean_flex_cut_l": 0
+        },
+        "buffer": {
+          "mean_shortage_days": 6.6,
+          "median_shortage_days": 0.0,
+          "max_shortage_days": 72,
+          "years_with_shortage": 8,
+          "years": 34,
+          "mean_shortage_l": 126,
+          "mean_alt_l": 5959,
+          "mean_flex_fresh_l": 4999,
+          "mean_flex_cut_l": 0
+        },
+        "buffer_cautious": {
+          "mean_shortage_days": 4.5,
+          "median_shortage_days": 0.0,
+          "max_shortage_days": 45,
+          "years_with_shortage": 8,
+          "years": 34,
+          "mean_shortage_l": 85,
+          "mean_alt_l": 6532,
+          "mean_flex_fresh_l": 4426,
+          "mean_flex_cut_l": 0
+        }
+      }
+    },
+    "chennai": {
+      "name": "Chennai, India",
+      "group": "different climate: northeast-monsoon coast",
+      "annual_rain_mm": 1280,
+      "results": {
+        "conventional": {
+          "mean_shortage_days": 70.0,
+          "median_shortage_days": 72.5,
+          "max_shortage_days": 126,
+          "years_with_shortage": 34,
+          "years": 34,
+          "mean_shortage_l": 1354,
+          "mean_alt_l": 2173,
+          "mean_flex_fresh_l": 8785,
+          "mean_flex_cut_l": 0
+        },
+        "always_alt": {
+          "mean_shortage_days": 0.3,
+          "median_shortage_days": 0.0,
+          "max_shortage_days": 9,
+          "years_with_shortage": 2,
+          "years": 34,
+          "mean_shortage_l": 6,
+          "mean_alt_l": 10958,
+          "mean_flex_fresh_l": 0,
+          "mean_flex_cut_l": 0
+        },
+        "threshold": {
+          "mean_shortage_days": 35.3,
+          "median_shortage_days": 32.5,
+          "max_shortage_days": 80,
+          "years_with_shortage": 30,
+          "years": 34,
+          "mean_shortage_l": 676,
+          "mean_alt_l": 3246,
+          "mean_flex_fresh_l": 7712,
+          "mean_flex_cut_l": 0
+        },
+        "buffer": {
+          "mean_shortage_days": 0.8,
+          "median_shortage_days": 0.0,
+          "max_shortage_days": 10,
+          "years_with_shortage": 4,
+          "years": 34,
+          "mean_shortage_l": 14,
+          "mean_alt_l": 5289,
+          "mean_flex_fresh_l": 5669,
+          "mean_flex_cut_l": 0
+        },
+        "buffer_cautious": {
+          "mean_shortage_days": 0.3,
+          "median_shortage_days": 0.0,
+          "max_shortage_days": 9,
+          "years_with_shortage": 2,
+          "years": 34,
+          "mean_shortage_l": 6,
+          "mean_alt_l": 5909,
+          "mean_flex_fresh_l": 5049,
+          "mean_flex_cut_l": 0
+        }
+      }
+    }
   },
   "per_year_shortage_days": {
     "conventional": {

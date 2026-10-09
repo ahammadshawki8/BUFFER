@@ -39,6 +39,26 @@ forecast says the reserve is at risk: **5,086 L, 54% less alternative water**, f
 And when the pond itself dries up from March to May, the fixed rule falls back on freshwater and runs
 short for **9.0 days** a season, while BUFFER stays at **0.5** (SIMULATED).
 
+### Does the model behave like the real places?
+
+Run the way households already behave (rainwater kept for drinking and cooking) with published household values,
+the model reproduces four of five published field figures for household tanks of 500-3,000 L: a 4.7-month storage
+period, 91% of households unable to store enough for the year, 2.84 months a year without reliable water in Koyra,
+and 27% year-round access. It does not reproduce the five-upazila average of 4.65 months without reliable water,
+which is worse than the model gives even for a 500 L tank (SIMULATED vs LITERATURE; simulation/results/REPORT.md).
+
+### With published household values instead of ours
+
+4 people, 6 L/person/day for drinking and cooking, 2,000 L tank (the UNDP coastal adaptation tank): shortage falls
+from 88 to 31 days a season. The remaining 31 days cannot be fixed by any routing: a 2,000 L tank does not hold a
+dry season of drinking water at 24 L/day. With 3,000 L it falls to 4 days (SIMULATED, LITERATURE inputs).
+
+### At other locations
+
+Across five Bangladeshi coastal sites, conventional use runs short 59-71 days a season and BUFFER 0-0.5 days, using
+less than half the alternative water of a fixed rule. In drought-prone Rajshahi and in Chennai (a different monsoon),
+BUFFER needs a more cautious forecast setting to stay close to the fixed rule (SIMULATED).
+
 ## 2. Where it helps, and where it doesn't (PROJECT.md §51)
 
 | Situation | Result | Label |

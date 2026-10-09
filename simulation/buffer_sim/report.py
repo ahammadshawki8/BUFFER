@@ -4,6 +4,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 NL = chr(10)
+FIELD_LABELS = {
+    "storage_months": "Average storage period of rainwater",
+    "share_not_enough_all_year": "Households that cannot store enough for the whole year",
+    "months_without_reliable_water_koyra": "Months a year without reliable water, Koyra",
+    "months_without_reliable_water_5_upazilas": "Months a year without reliable water, five-upazila average",
+    "share_year_round_koyra": "Households with year-round rainwater access, Koyra",
+}
 SHORT = {
     "conventional": "Conventional",
     "always_alt": "Static rule",
@@ -176,9 +183,81 @@ With the freshwater level sensor down for all of January every season, BUFFER fa
 freshwater (no flexible allowance), exactly as the firmware does. Mean shortage stays at
 **{s['sensor_outage_january']['mean_shortage_days']} days**: a month-long outage in the driest stretch costs nothing.
 
+## Check against published field data
+
+The model is run the way coastal households already behave: stored rainwater is kept for drinking and
+cooking only (Ghosh & Ahmed 2022). Household values come from a rainwater system evaluated in rural Khulna:
+""" + f"""{s['field_check']['household']}. The household's tank size is not reported in the field studies,
+so the model is shown for the realistic range of household storage.
+
+| Published observation | Value | Where |
+|---|---|---|
+""" + NL.join(
+        f"| {FIELD_LABELS[k]} | {v['value']:.0%} | {v['where']} |" if v['value'] < 1 else f"| {FIELD_LABELS[k]} | {v['value']} months | {v['where']} |"
+        for k, v in s['field_check']['observed'].items()
+    ) + """
+
+| Tank | Storage period after the tank was last full (months) | Seasons when rainwater did not last all year | Months without rainwater per year |
+|---|---|---|---|
+""" + NL.join(
+        f"| {n(int(k))} L | {v['storage_months']} | {v['share_not_enough_all_year']:.0%} | {v['months_without_water']} |" for k, v in s['field_check']['modelled_by_tank'].items()
+    ) + """
+
+**Reading:** four of the five published figures fall inside what the model produces for household tanks of
+500-3,000 L: a 4.7-month storage period sits between the 2,000 L and 3,000 L results; 91% of households running
+short matches about 1,500 L; 2.84 months without reliable water in Koyra matches 500-1,000 L; 27% year-round access
+falls between 2,000 L and 3,000 L. The fifth does not: the five-upazila average of 4.65 months without reliable water
+is worse than even the 500 L result (3.2 months), pulled up by Paikgachha (7.15 months). Possible reasons, not tested
+here: households with very small or no rainwater storage, rainwater used beyond drinking and cooking, or larger
+families than the 4 people modelled. No single tank size reproduces all figures at once, as expected when real households have a
+mix of tank sizes, family sizes and habits that the surveys do not report. This is a
+**consistency check, not a calibration**: it shows the water balance behaves like the real places, not that
+it predicts any one household. A pilot with measured tanks and use would close this gap.
+
+## Household values from the literature
+
+The main comparison rerun with published values instead of our assumptions: """ + f"""{s['literature_household']['household']['people']} people,
+{s['literature_household']['household']['critical_lpcd']} L/person/day for drinking and cooking, a 2,000 L tank (the tank each family received
+in UNDP's Gender-responsive Coastal Adaptation project in Khulna and Satkhira), 40 m² roof, runoff 0.8.
+Flexible use stays an assumption ({s['literature_household']['household']['flexible_lpcd']} L/person/day).
+
+| Policy | 2,000 L tank: shortage days | Seasons with shortage | Alternative water (L) | 3,000 L tank: shortage days | Seasons with shortage |
+|---|---|---|---|---|---|
+""" + NL.join(
+        f"| {SHORT[p]} | {s['literature_household']['tank_2000'][p]['mean_shortage_days']} | {s['literature_household']['tank_2000'][p]['years_with_shortage']} of 34 | {n(s['literature_household']['tank_2000'][p]['mean_alt_l'])} | {s['literature_household']['tank_3000'][p]['mean_shortage_days']} | {s['literature_household']['tank_3000'][p]['years_with_shortage']} of 34 |"
+        for p in ('conventional', 'threshold', 'always_alt', 'buffer')
+    ) + """
+
+**Reading:** with the published 6 L/person/day for drinking and cooking, a 2,000 L tank cannot carry even drinking
+water through most dry seasons; BUFFER cuts shortage from about 88 to 31 days, the same as the best any routing can do,
+and the rest is a storage gap. With 3,000 L, BUFFER brings it to 4 days. The honest message for programmes: BUFFER
+makes the most of the storage a household has, and its runway display shows where storage itself must grow.
+
+## Other locations
+
+Same household (5 people, 3,000 L), each site's own 34 seasons of NASA POWER rainfall.
+
+| Site | Climate | Annual rain (mm) | Conventional | Tank threshold | Static rule | BUFFER | BUFFER, cautious forecast | Alternative water: static rule / BUFFER (L) |
+|---|---|---|---|---|---|---|---|---|
+""" + NL.join(
+        f"| {v['name']} | {v['group']} | {n(v['annual_rain_mm'])} | {v['results']['conventional']['mean_shortage_days']} | {v['results']['threshold']['mean_shortage_days']} | {v['results']['always_alt']['mean_shortage_days']} | {v['results']['buffer']['mean_shortage_days']} | {v['results']['buffer_cautious']['mean_shortage_days']} | {n(v['results']['always_alt']['mean_alt_l'])} / {n(v['results']['buffer']['mean_alt_l'])} |"
+        for v in s['sites'].values()
+    ) + """
+
+Shortage days per dry season. "Cautious forecast" plans for the recharge date exceeded in only 10% of past seasons
+instead of 25%.
+
+**Reading:** across all five Bangladeshi coastal sites BUFFER cuts shortage from 59-71 days to 0-0.5 days and uses about
+half the alternative water of the static rule. In the two different climates the standard forecast setting is slightly
+less safe than the static rule (Rajshahi 6.6 against 3.8 days; Chennai 0.8 against 0.3); planning more cautiously
+closes most of that (Rajshahi 4.5, Chennai 0.3) while still using less alternative water. The forecast caution is a
+setting each deployment should choose for its climate.
+
 ## Limitations
 
-- Household demand, roof area, tank size and reserve are assumptions; they must be replaced with field values.
+- The headline household (5 people, 4 L/person/day, 3,000 L) is an assumption; the literature-based household above
+  uses published values except for flexible use. Both must be replaced with measured values from a pilot.
+- The field check compares against survey averages; the surveys do not report tank-size distributions.
 - NASA POWER is a gridded reanalysis product (0.5 degree), not a rain gauge at the house.
 - The model assumes the household follows the routing (automatic valves make this realistic; advisory mode would not).
 - Water quality is outside the model: the alternative source is assumed pre-qualified for its permitted uses (PROJECT.md §14).

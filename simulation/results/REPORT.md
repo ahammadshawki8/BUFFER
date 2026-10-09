@@ -155,9 +155,87 @@ With the freshwater level sensor down for all of January every season, BUFFER fa
 freshwater (no flexible allowance), exactly as the firmware does. Mean shortage stays at
 **0.5 days**: a month-long outage in the driest stretch costs nothing.
 
+## Check against published field data
+
+The model is run the way coastal households already behave: stored rainwater is kept for drinking and
+cooking only (Ghosh & Ahmed 2022). Household values come from a rainwater system evaluated in rural Khulna:
+4 people, 24 L/day drinking and cooking only, 40 m2 roof (literature). The household's tank size is not reported in the field studies,
+so the model is shown for the realistic range of household storage.
+
+| Published observation | Value | Where |
+|---|---|---|
+| Average storage period of rainwater | 4.7 months | Sutarkhali, Dacope (Khulna), 116 households |
+| Households that cannot store enough for the whole year | 91% | Sutarkhali, Dacope (Khulna), 116 households |
+| Months a year without reliable water, Koyra | 2.84 months | Koyra; survey of 66,234 households in Koyra, Dacope, Paikgachha, Assasuni and Shyamnagar |
+| Months a year without reliable water, five-upazila average | 4.65 months | five-upazila average, same survey |
+| Households with year-round rainwater access, Koyra | 27% | Koyra |
+
+| Tank | Storage period after the tank was last full (months) | Seasons when rainwater did not last all year | Months without rainwater per year |
+|---|---|---|---|
+| 500 L | 0.7 | 100% | 3.2 |
+| 1,000 L | 1.5 | 97% | 2.27 |
+| 1,500 L | 2.3 | 91% | 1.62 |
+| 2,000 L | 3.3 | 85% | 1.0 |
+| 3,000 L | 5.2 | 24% | 0.13 |
+
+**Reading:** four of the five published figures fall inside what the model produces for household tanks of
+500-3,000 L: a 4.7-month storage period sits between the 2,000 L and 3,000 L results; 91% of households running
+short matches about 1,500 L; 2.84 months without reliable water in Koyra matches 500-1,000 L; 27% year-round access
+falls between 2,000 L and 3,000 L. The fifth does not: the five-upazila average of 4.65 months without reliable water
+is worse than even the 500 L result (3.2 months), pulled up by Paikgachha (7.15 months). Possible reasons, not tested
+here: households with very small or no rainwater storage, rainwater used beyond drinking and cooking, or larger
+families than the 4 people modelled. No single tank size reproduces all figures at once, as expected when real households have a
+mix of tank sizes, family sizes and habits that the surveys do not report. This is a
+**consistency check, not a calibration**: it shows the water balance behaves like the real places, not that
+it predicts any one household. A pilot with measured tanks and use would close this gap.
+
+## Household values from the literature
+
+The main comparison rerun with published values instead of our assumptions: 4 people,
+6.0 L/person/day for drinking and cooking, a 2,000 L tank (the tank each family received
+in UNDP's Gender-responsive Coastal Adaptation project in Khulna and Satkhira), 40 m² roof, runoff 0.8.
+Flexible use stays an assumption (6.0 L/person/day).
+
+| Policy | 2,000 L tank: shortage days | Seasons with shortage | Alternative water (L) | 3,000 L tank: shortage days | Seasons with shortage |
+|---|---|---|---|---|---|
+| Conventional | 88.1 | 34 of 34 | 2,160 | 67.1 | 33 of 34 |
+| Tank threshold | 64.7 | 33 of 34 | 2,897 | 39.6 | 30 of 34 |
+| Static rule | 30.5 | 29 of 34 | 8,766 | 4.0 | 8 of 34 |
+| **BUFFER** | 30.9 | 29 of 34 | 4,456 | 4.0 | 8 of 34 |
+
+**Reading:** with the published 6 L/person/day for drinking and cooking, a 2,000 L tank cannot carry even drinking
+water through most dry seasons; BUFFER cuts shortage from about 88 to 31 days, the same as the best any routing can do,
+and the rest is a storage gap. With 3,000 L, BUFFER brings it to 4 days. The honest message for programmes: BUFFER
+makes the most of the storage a household has, and its runway display shows where storage itself must grow.
+
+## Other locations
+
+Same household (5 people, 3,000 L), each site's own 34 seasons of NASA POWER rainfall.
+
+| Site | Climate | Annual rain (mm) | Conventional | Tank threshold | Static rule | BUFFER | BUFFER, cautious forecast | Alternative water: static rule / BUFFER (L) |
+|---|---|---|---|---|---|---|---|---|
+| Koyra, Khulna, Bangladesh | southwest coast | 1,817 | 70.5 | 32.1 | 0.5 | 0.5 | 0.5 | 10,958 / 5,086 |
+| Kuakata, Patuakhali, Bangladesh | south-central coast | 2,536 | 65.9 | 30.3 | 0.1 | 0.1 | 0.1 | 10,958 / 4,787 |
+| Bhola, Bangladesh | south-central coast | 2,516 | 64.3 | 30.4 | 0.0 | 0.0 | 0.0 | 10,958 / 4,738 |
+| Hatiya, Noakhali, Bangladesh | southeast coast | 2,759 | 63.6 | 31.7 | 0.1 | 0.1 | 0.1 | 10,958 / 4,598 |
+| Cox's Bazar, Bangladesh | southeast coast | 4,528 | 58.9 | 30.2 | 0.1 | 0.5 | 0.1 | 10,958 / 4,010 |
+| Rajshahi, Bangladesh | different climate: drought-prone northwest | 1,264 | 92.1 | 49.9 | 3.8 | 6.6 | 4.5 | 10,958 / 5,959 |
+| Chennai, India | different climate: northeast-monsoon coast | 1,280 | 70.0 | 35.3 | 0.3 | 0.8 | 0.3 | 10,958 / 5,289 |
+
+Shortage days per dry season. "Cautious forecast" plans for the recharge date exceeded in only 10% of past seasons
+instead of 25%.
+
+**Reading:** across all five Bangladeshi coastal sites BUFFER cuts shortage from 59-71 days to 0-0.5 days and uses about
+half the alternative water of the static rule. In the two different climates the standard forecast setting is slightly
+less safe than the static rule (Rajshahi 6.6 against 3.8 days; Chennai 0.8 against 0.3); planning more cautiously
+closes most of that (Rajshahi 4.5, Chennai 0.3) while still using less alternative water. The forecast caution is a
+setting each deployment should choose for its climate.
+
 ## Limitations
 
-- Household demand, roof area, tank size and reserve are assumptions; they must be replaced with field values.
+- The headline household (5 people, 4 L/person/day, 3,000 L) is an assumption; the literature-based household above
+  uses published values except for flexible use. Both must be replaced with measured values from a pilot.
+- The field check compares against survey averages; the surveys do not report tank-size distributions.
 - NASA POWER is a gridded reanalysis product (0.5 degree), not a rain gauge at the house.
 - The model assumes the household follows the routing (automatic valves make this realistic; advisory mode would not).
 - Water quality is outside the model: the alternative source is assumed pre-qualified for its permitted uses (PROJECT.md §14).

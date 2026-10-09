@@ -20,7 +20,9 @@ before the critical reserve runs out. Drinking and cooking always get freshwater
 | Chance of a shortage in a season (2,000 resampled seasons, noisy demand) | 99.9% | 8.2% |
 
 BUFFER matches the protection of always using the alternative source while using 54% less of it, and
-stays protected when the alternative dries up. Household values are assumptions until a field pilot measures them.
+stays protected when the alternative dries up. The same pattern holds at five Bangladeshi coastal sites. Run the
+way households behave today, the model reproduces four of five published field figures from Khulna (storage period,
+share of households running short, months without water, year-round access). Household values are assumptions until a field pilot measures them.
 Details: [simulation/results/REPORT.md](simulation/results/REPORT.md), [docs/IMPACT.md](docs/IMPACT.md).
 
 ## Status

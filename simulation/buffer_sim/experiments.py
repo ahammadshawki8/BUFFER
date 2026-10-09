@@ -22,8 +22,8 @@ BASE = Household()
 QUANTILE = 0.75  # BUFFER plans for a recharge later than in 3 out of 4 past years
 
 
-def prepare():
-    df = load()
+def prepare(site: str = "koyra"):
+    df = load(site)
     # Hydrological year runs June to May, so each dry season sits inside one year.
     df["hydro_year"] = np.where(df.date.dt.month >= 6, df.date.dt.year, df.date.dt.year - 1)
     df = df[(df.date >= "1991-06-01")].reset_index(drop=True)
@@ -165,6 +165,12 @@ def main():
     comp = compliance(df, BASE, est_base)
     outage = sensor_outage(df, BASE, est_base)
 
+    from . import checks
+
+    field = checks.field_check(df, est_base)
+    lit = checks.literature_household(df, est_base)
+    site_results = checks.sites(BASE, QUANTILE)
+
     people_sweep = {}
     for people in (3, 5, 7):
         _, s = compare(df, BASE.with_(people=people), cache=cache)
@@ -218,6 +224,9 @@ def main():
         "monte_carlo": mc,
         "compliance": comp,
         "sensor_outage_january": outage,
+        "field_check": field,
+        "literature_household": lit,
+        "sites": site_results,
         "per_year_shortage_days": per_year,
         "example_season": example,
     }
