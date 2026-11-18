@@ -9,7 +9,7 @@
 Xylem Global Student Innovation Challenge 2026 · University track · Water Access
 
 [![Live simulator](https://img.shields.io/badge/Live_simulator-open-1f6feb?style=for-the-badge)](https://ashfaqstu.github.io/BUFFER/)
-[![Tests](https://img.shields.io/github/actions/workflow/status/ashfaqstu/BUFFER/tests.yml?branch=main&label=tests&style=for-the-badge)](https://github.com/ashfaqstu/BUFFER/actions/workflows/tests.yml)
+[![Xylem Challenge 2026](https://img.shields.io/badge/Xylem_2026-Water_Access-0a7ea4?style=for-the-badge)](#the-problem)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2ea043?style=for-the-badge)](LICENSE)
 
 <img src="docs/images/demo.gif" alt="BUFFER digital twin: the household tank, the alternative source and the valves, with the freshwater runway rising from 4 to 7 days" width="900">
@@ -122,7 +122,7 @@ flowing and protects the reserve; if power fails both valves close and a manual 
 | Simulation | Python 3.12, NumPy, pandas, Matplotlib, pytest; NASA POWER daily rainfall (PRECTOTCORR) |
 | Firmware | C++ on the Arduino framework for ESP32, PlatformIO, Unity tests |
 | Simulator | React 19, TypeScript, Vite, three.js with React Three Fiber, drei and postprocessing, Web Serial API |
-| Quality | GitHub Actions (tests, firmware build, simulator build and deploy), oxlint, Playwright browser checks |
+| Quality | pytest and Unity test suites, GitHub Actions workflows (tests, firmware build, simulator deploy), oxlint, Playwright browser checks |
 
 ## Repository
 
