@@ -1,4 +1,4 @@
-// Usage: node tools/shots.mjs <outDir> t1 t2 ...   (needs `npx vite preview --port 4173` running)
+// Usage: node tools/shots.mjs <outDir> t1 t2 ...   (needs the dev server on :5173: npm run dev)
 import { chromium } from 'playwright'
 const [out, ...times] = process.argv.slice(2)
 const browser = await chromium.launch({ args: ['--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist'] })

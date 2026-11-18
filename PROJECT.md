@@ -1,7 +1,7 @@
 # BUFFER
 ## Adaptive Freshwater Reserve Management for Climate-Vulnerable Households
 
-> **Project status (9 October 2026):** Software, simulation and firmware built and tested; physical prototype not built; stakeholder conversations scheduled; submission materials in progress  
+> **Project status (19 November 2026):** Simulation, firmware, 3D dashboard and the physical bench prototype built and working; submission video finished; stakeholder conversations not yet held  
 > **Competition:** Xylem Global Student Innovation Challenge 2026  
 > **Track:** University  
 > **Challenge:** **Water Access — Enabling universal access to reliable, affordable WASH services**  
@@ -20,6 +20,7 @@ claim in the submission can be traced to a file. Evidence labels follow §88.
 |---|---|---|---|
 | Tier 1-4: model, policy, hedging, uncertainty | Daily water balance on **real rainfall** (NASA POWER, Koyra, 1991-2025, 34 dry seasons); BUFFER rule (§42) against three baselines (§50); tank, household, forecast and dry-pond sweeps; 2,000-run Monte Carlo; advice-compliance and sensor-outage runs | `simulation/` | 10 tests passing; `results/REPORT.md` |
 | Tier 5: controller | ESP32 firmware: two ultrasonic level sensors, two flow sensors, two valves via relays, metered requests, daily flexible allowance, household override, sensor-fault fail-safe, USB telemetry | `firmware/` | 12 native tests passing; compiles for ESP32 (RAM 6.8%, flash 23.1%) |
+| Tier 5: bench prototype | Two-tank bench rig: ESP32 running the firmware, HC-SR04 level sensors, two 12 V solenoid valves, flow sensor, toilet/cleaning outlet | `hardware/` | Built and working; filmed for the submission video |
 | Tier 6: digital twin | 3D dashboard with a guided demo, an Explore mode running the model live, and a Live device mode that mirrors the controller over USB | `dashboard/` | Builds; scripted browser checks |
 | Tier 7: validation plan | 12 bench tests with pass criteria | `validation/experiments.md` | Not yet run |
 | Tier 8: feasibility | Priced bill of materials, wiring, serial protocol, household retrofit plan, failure modes, deployment and business model, field pilot plan | `hardware/`, `docs/` | Documents |
@@ -51,7 +52,7 @@ claim in the submission can be traced to a file. Evidence labels follow §88.
 
 | Item | Plan |
 |---|---|
-| Physical prototype | Not built (about 5,800 BDT, `hardware/bom.csv`). Prototype footage in the video is an AI-generated visualisation of the planned setup and is disclosed as such in the submission |
+| Bench test protocol | The bench prototype is built and working (about 5,800 BDT, `hardware/bom.csv`); the 12 formal bench tests in `validation/experiments.md` are not yet recorded |
 | Stakeholder conversations | Three 15-minute conversations: a WASH researcher, an NGO field officer, a coastal household. Notes go in `research/stakeholder-notes.md` |
 | Field pilot | Planned (`docs/PILOT_PLAN.md`); after the competition |
 | Patent search | Preliminary search done (`research/patent-search.md`): no document found combining a recharge forecast, a protected drinking reserve and priority routing. Direct Espacenet/Patentscope searches and a patent agent's review still needed before any filing; still no "first" or "only" claims |
@@ -1319,7 +1320,7 @@ The video must include: **team introduction**, **track (University)**, **challen
 | 0:25–0:55 | **The problem, with evidence** | Animated map of Khulna/Satkhira; stats: 27% year-round access (Koyra), 2.84 months a year without reliable water; one 5-second news clip | Impact |
 | 0:55–1:15 | **The insight:** families already ration water by hand | Household interview (team's own); then: "What if the tank could see the dry season coming?" | Innovation |
 | 1:15–1:35 | **BUFFER:** battery management for freshwater | Logo intro animation; runway, reserve and routing explained on the 3D dashboard | Innovation |
-| 1:35–2:30 | **The demo** | AI-generated prototype footage intercut with the dashboard: 4.0 → 7.0 → 9.0 days, valves switching, rain delayed | Feasibility |
+| 1:35–2:30 | **The demo** | The team's bench prototype intercut with the dashboard: 4.0 → 7.0 → 9.0 days, valves switching, rain delayed | Feasibility |
 | 2:30–3:00 | **Evidence:** tested on 34 years of real rainfall | Animated charts: 70.5 → 0.5 shortage days; 99.9% → 8.2% chance of shortage; model matches 4 of 5 field figures; results at 7 sites | Impact, Feasibility |
 | 3:00–3:15 | **Experts react** | Researcher and NGO interviews (team's own), one or two soundbites | Feasibility |
 | 3:15–3:35 | **How it is built and deployed** | ESP32 controller and firmware, parts list (about 6,300 BDT per household), add-on to existing NGO tanks (UNDP's 2,000 L programme) | Feasibility |
@@ -1341,7 +1342,7 @@ The video must include: **team introduction**, **track (University)**, **challen
 | Narration script, word for word, timed to the structure (~480 words) | Written from this plan and `simulation/results/REPORT.md` | Claude, approved by the team |
 | Motion graphics: 34-season chart, Monte Carlo result, field-check comparison, 7-site map, stat cards, name captions, title and end cards | Built in Remotion from `simulation/results/summary.json` | Claude |
 | Dashboard footage (intro, Explore, guided demo) | Frame-by-frame renders of `dashboard/` | Claude |
-| Prototype footage | AI-generated from the master image and Veo prompts | Team member |
+| Prototype footage | Filmed by the team on the working bench prototype | Team |
 | Stakeholder interviews | Team's own three conversations (`research/stakeholder-notes.md`) | Team |
 | Context footage | `research/media-sources.md` (short clips, credited on screen, listed in the disclosure) | Team |
 | Narration recording | Team member's voice | Team |
@@ -1349,10 +1350,9 @@ The video must include: **team introduction**, **track (University)**, **challen
 
 ## Disclosure (on the project page and in the slides)
 
-- Real: simulation, firmware, dashboard, stakeholder conversations.
-- AI-generated: the physical prototype footage, shown as a visualisation of the planned bench setup.
+- Real and built by the team: simulation, firmware, dashboard, and the working bench prototype (filmed by the team).
 - Third-party footage: each clip credited on screen and listed.
-- Not yet built: the physical prototype.
+- Not yet done: stakeholder conversations, formal bench test runs, field pilot.
 
 ## Upload checklist
 
@@ -1360,7 +1360,7 @@ The video must include: **team introduction**, **track (University)**, **challen
 2. Read the **Checks** step: if any clip is set to block the video, replace or cut it and re-upload.
 3. Open the link in a private browser window to confirm it plays.
 4. Keep a backup copy on Google Drive ("anyone with the link can view") and add both links to the project page.
-5. Submit well before 20 November 2026 (the official deadline times conflict; aim for 15 November).
+5. Submit well before the deadline: **20 November 2026, 9:00 PM UTC (21 November, 3:00 a.m. Bangladesh time)**, per Official Rules section 5. Team target: 18 November.
 
 ---
 

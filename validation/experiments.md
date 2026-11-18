@@ -1,10 +1,10 @@
 # Bench validation protocol
 
-Tests to run on the physical prototype once it is built (hardware/wiring.md). Each test has a pass
+Tests to run on the bench prototype (built and working; wiring in hardware/wiring.md). Each test has a pass
 criterion and a results line to fill in. Results go in `validation/results/` as dated CSV files of the
 telemetry stream (copy from the dashboard's Live device mode or a serial log).
 
-Status: **not yet run.** The controller logic behind every test already passes its native unit tests
+Status: **formal runs not yet recorded** (no files in `validation/results/` yet). The controller logic behind every test already passes its native unit tests
 (`firmware/test/test_core`, 12 tests) and compiles for the ESP32 (`pio run -e esp32dev`).
 
 ## Setup
