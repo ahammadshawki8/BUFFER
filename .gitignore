@@ -1,4 +1,16 @@
+# dependencies and build output
 node_modules/
 dist/
+.venv/
+__pycache__/
+.pytest_cache/
+.pio/
+
+# logs, local and editor files
 *.log
+*.local
 .DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
